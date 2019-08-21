@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Fitbook.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Fitbook.Models;
 
 namespace Fitbook
 {
@@ -38,8 +39,10 @@ namespace Fitbook
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
+                .AddDefaultUI()
+                .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -73,5 +76,6 @@ namespace Fitbook
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
     }
 }
