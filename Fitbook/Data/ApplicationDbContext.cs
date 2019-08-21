@@ -10,6 +10,12 @@ namespace Fitbook.Data
     public class ApplicationDbContext : IdentityDbContext
     {
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<CustomRecipe> CustomRecipes { get; set; }
+        public DbSet<FitbookUser> FitbookUsers { get; set; }
+        public DbSet<FitbookUsersMacronutrients> FitbookUsersMacronutrients { get; set; }
+        public DbSet<Food> Foods { get; set; }
+        public DbSet<RecommendedRecipe> ReccommendedRecipes { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

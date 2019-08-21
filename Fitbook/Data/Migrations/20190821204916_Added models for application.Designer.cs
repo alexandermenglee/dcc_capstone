@@ -4,134 +4,22 @@ using Fitbook.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Fitbook.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190821204916_Added models for application")]
+    partial class Addedmodelsforapplication
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Fitbook.Models.CustomRecipe", b =>
-                {
-                    b.Property<int>("CustomRecipeId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Calories");
-
-                    b.Property<int>("CaloriesPerServing");
-
-                    b.Property<int>("Carbohydrates");
-
-                    b.Property<string>("CustomRecipeName");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("varchar(500)");
-
-                    b.Property<int>("Fat");
-
-                    b.Property<int>("FitbookUserId");
-
-                    b.Property<int>("Protein");
-
-                    b.Property<double?>("Servings");
-
-                    b.HasKey("CustomRecipeId");
-
-                    b.HasIndex("FitbookUserId");
-
-                    b.ToTable("CustomRecipes");
-                });
-
-            modelBuilder.Entity("Fitbook.Models.FitbookUser", b =>
-                {
-                    b.Property<int>("FitbookUserId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<double?>("Age");
-
-                    b.Property<string>("ApplicationUserId");
-
-                    b.Property<string>("FirstName");
-
-                    b.Property<double?>("Height");
-
-                    b.Property<string>("LastName");
-
-                    b.Property<int>("Meals");
-
-                    b.Property<double?>("Weight");
-
-                    b.HasKey("FitbookUserId");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.ToTable("FitbookUsers");
-                });
-
-            modelBuilder.Entity("Fitbook.Models.FitbookUsersMacronutrients", b =>
-                {
-                    b.Property<int>("MacronutrientId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Carbohydrates");
-
-                    b.Property<int>("DailyCalories");
-
-                    b.Property<int>("Fat");
-
-                    b.Property<int>("FitbookUserId");
-
-                    b.Property<int>("Protein");
-
-                    b.HasKey("MacronutrientId");
-
-                    b.HasIndex("FitbookUserId");
-
-                    b.ToTable("FitbookUsersMacronutrients");
-                });
-
-            modelBuilder.Entity("Fitbook.Models.Food", b =>
-                {
-                    b.Property<int>("FoodId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Calories");
-
-                    b.Property<int>("Carbohydrates");
-
-                    b.Property<int>("Fat");
-
-                    b.Property<string>("FoodName");
-
-                    b.Property<int>("Protein");
-
-                    b.HasKey("FoodId");
-
-                    b.ToTable("Foods");
-                });
-
-            modelBuilder.Entity("Fitbook.Models.RecommendedRecipe", b =>
-                {
-                    b.Property<int>("RecommendedRecipeId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.HasKey("RecommendedRecipeId");
-
-                    b.ToTable("ReccommendedRecipes");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -306,29 +194,6 @@ namespace Fitbook.Data.Migrations
                     b.Property<string>("Name");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
-                });
-
-            modelBuilder.Entity("Fitbook.Models.CustomRecipe", b =>
-                {
-                    b.HasOne("Fitbook.Models.FitbookUser", "FitbookUser")
-                        .WithMany()
-                        .HasForeignKey("FitbookUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Fitbook.Models.FitbookUser", b =>
-                {
-                    b.HasOne("Fitbook.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
-                });
-
-            modelBuilder.Entity("Fitbook.Models.FitbookUsersMacronutrients", b =>
-                {
-                    b.HasOne("Fitbook.Models.FitbookUser", "FitbookUser")
-                        .WithMany()
-                        .HasForeignKey("FitbookUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
