@@ -73,31 +73,26 @@ namespace Fitbook.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
-                
-                if(!await _roleManager.RoleExistsAsync(StaticDetails.AdminEndUser))
+               
+
+                if (!await _roleManager.RoleExistsAsync(RoleNames.FitbookTrainer))
                 {
-                    await _roleManager.CreateAsync(new IdentityRole(StaticDetails.AdminEndUser));
-                }
-                if(!await _roleManager.RoleExistsAsync(StaticDetails.SuperAdminUser))
-                {
-                    await _roleManager.CreateAsync(new IdentityRole(StaticDetails.SuperAdminUser));
+                    await _roleManager.CreateAsync(new IdentityRole(RoleNames.FitbookTrainer));
                 }
 
-                if(Input.SuperAdmin)
+                if(!await _roleManager.RoleExistsAsync(RoleNames.FitbookUser))
                 {
-                    await _userManager.AddToRoleAsync(user, StaticDetails.SuperAdminUser);
+                    await _roleManager.CreateAsync(new IdentityRole(RoleNames.FitbookUser));
                 }
-                else
-                {
-                    await _userManager.AddToRoleAsync(user, StaticDetails.AdminEndUser);
-                }
+
+                await _userManager.AddToRoleAsync(user, RoleNames.FitbookUser);
             }
 
-            // If we got this far, something failed, redisplay form
             return Page();
         }
     }
