@@ -329,5 +329,4 @@ ASALocalRun/
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
 
-api_keys/
-api_keys/
+API_Keys/
