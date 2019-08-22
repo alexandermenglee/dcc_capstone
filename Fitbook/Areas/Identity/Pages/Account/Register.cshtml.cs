@@ -22,7 +22,6 @@ namespace Fitbook.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
-
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
@@ -78,21 +77,36 @@ namespace Fitbook.Areas.Identity.Pages.Account
             {
                 var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
-               
+
 
                 if (!await _roleManager.RoleExistsAsync(RoleNames.FitbookTrainer))
                 {
                     await _roleManager.CreateAsync(new IdentityRole(RoleNames.FitbookTrainer));
                 }
 
-                if(!await _roleManager.RoleExistsAsync(RoleNames.FitbookUser))
+                if (!await _roleManager.RoleExistsAsync(RoleNames.FitbookUser))
                 {
                     await _roleManager.CreateAsync(new IdentityRole(RoleNames.FitbookUser));
                 }
 
                 await _userManager.AddToRoleAsync(user, RoleNames.FitbookUser);
+
+                try
+                {
+                    var signedIn = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, true, false);
+
+                    if (signedIn.Succeeded)
+                    {
+                        return RedirectToAction("EnterStatistics", "FitbookUser");
+                    }
+                }
+                catch
+                {
+                    return Page();
+                }
             }
 
+            // If we made it this far, we made a mistake
             return Page();
         }
     }

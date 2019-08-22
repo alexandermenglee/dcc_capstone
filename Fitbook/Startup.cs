@@ -14,6 +14,7 @@ using Fitbook.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Fitbook.Models;
+using Fitbook.Controllers;
 
 namespace Fitbook
 {
@@ -36,7 +37,7 @@ namespace Fitbook
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContextPool<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<IdentityUser, IdentityRole>()
@@ -46,6 +47,8 @@ namespace Fitbook
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            
+            services.AddTransient<IMockServiceRegister, MockServiceRegister>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
