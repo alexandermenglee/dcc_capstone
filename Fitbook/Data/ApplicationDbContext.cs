@@ -15,6 +15,7 @@ namespace Fitbook.Data
         public DbSet<FitbookUsersMacronutrients> FitbookUsersMacronutrients { get; set; }
         public DbSet<Food> Foods { get; set; }
         public DbSet<RecommendedRecipe> ReccommendedRecipes { get; set; }
+        public DbSet<Day> Days { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

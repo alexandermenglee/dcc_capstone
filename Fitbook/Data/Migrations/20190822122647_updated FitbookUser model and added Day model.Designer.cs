@@ -4,14 +4,16 @@ using Fitbook.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Fitbook.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190822122647_updated FitbookUser model and added Day model")]
+    partial class updatedFitbookUsermodelandaddedDaymodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,31 +51,6 @@ namespace Fitbook.Data.Migrations
                     b.HasIndex("FitbookUserId");
 
                     b.ToTable("CustomRecipes");
-                });
-
-            modelBuilder.Entity("Fitbook.Models.Day", b =>
-                {
-                    b.Property<int>("DayId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Calories");
-
-                    b.Property<int>("Carbohydrates");
-
-                    b.Property<int>("Fat");
-
-                    b.Property<int>("FitbookUserId");
-
-                    b.Property<int>("Meals");
-
-                    b.Property<int>("Protein");
-
-                    b.HasKey("DayId");
-
-                    b.HasIndex("FitbookUserId");
-
-                    b.ToTable("Days");
                 });
 
             modelBuilder.Entity("Fitbook.Models.FitbookUser", b =>
@@ -134,8 +111,6 @@ namespace Fitbook.Data.Migrations
 
                     b.Property<int>("Carbohydrates");
 
-                    b.Property<int?>("DayId");
-
                     b.Property<int>("Fat");
 
                     b.Property<string>("FoodName");
@@ -143,8 +118,6 @@ namespace Fitbook.Data.Migrations
                     b.Property<int>("Protein");
 
                     b.HasKey("FoodId");
-
-                    b.HasIndex("DayId");
 
                     b.ToTable("Foods");
                 });
@@ -343,14 +316,6 @@ namespace Fitbook.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Fitbook.Models.Day", b =>
-                {
-                    b.HasOne("Fitbook.Models.FitbookUser", "FitbookUser")
-                        .WithMany()
-                        .HasForeignKey("FitbookUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Fitbook.Models.FitbookUser", b =>
                 {
                     b.HasOne("Fitbook.Models.ApplicationUser", "ApplicationUser")
@@ -364,13 +329,6 @@ namespace Fitbook.Data.Migrations
                         .WithMany()
                         .HasForeignKey("FitbookUserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Fitbook.Models.Food", b =>
-                {
-                    b.HasOne("Fitbook.Models.Day")
-                        .WithMany("Foods")
-                        .HasForeignKey("DayId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
