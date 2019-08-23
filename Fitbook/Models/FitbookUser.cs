@@ -17,6 +17,7 @@ namespace Fitbook.Models
         public double? Height { get; set; }
         public double? Weight { get; set; }
         public string Gender { get; set; }
+        public string Lifestyle { get; set; }
         public string ApplicationUserId { get; set; }
         [ForeignKey("ApplicationUserId")]
         public ApplicationUser ApplicationUser { get; set; }

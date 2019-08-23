@@ -78,5 +78,22 @@ namespace Fitbook.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public ActionResult ChooseLifestyle()
+        {
+            return View();
+        }
+
+        public async Task<ActionResult> SubmitLifestyle(string lifestyle)
+        {
+            var currentSignedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var fitbookUser = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(currentSignedInUserId)).Single();
+
+            fitbookUser.Lifestyle = lifestyle;
+
+            await _context.SaveChangesAsync();
+
+            return View();
+        }
     }
 }

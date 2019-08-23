@@ -2,13 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Fitbook.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Fitbook.Models;
 
 namespace Fitbook.Controllers
 {
     public class FitbookUsersMacronutrientsController : Controller
     {
+        ApplicationDbContext _context;
+
+        public FitbookUsersMacronutrientsController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         // GET: FitbookUsersMacronutrients
         public ActionResult Index()
         {
@@ -47,6 +56,7 @@ namespace Fitbook.Controllers
         // GET: FitbookUsersMacronutrients/Edit/5
         public ActionResult Edit(int id)
         {
+
             return View();
         }
 
@@ -58,29 +68,6 @@ namespace Fitbook.Controllers
             try
             {
                 // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: FitbookUsersMacronutrients/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: FitbookUsersMacronutrients/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
 
                 return RedirectToAction(nameof(Index));
             }
