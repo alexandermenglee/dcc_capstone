@@ -19,6 +19,7 @@ namespace Fitbook.Models
         public string Gender { get; set; }
         public string Lifestyle { get; set; }
         public string ApplicationUserId { get; set; }
+        public int BMR { get; set; }
         [ForeignKey("ApplicationUserId")]
         public ApplicationUser ApplicationUser { get; set; }
     }
