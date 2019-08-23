@@ -6,6 +6,7 @@ using Fitbook.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Fitbook.Models;
+using Fitbook.Classes;
 
 namespace Fitbook.Controllers
 {
@@ -73,8 +74,31 @@ namespace Fitbook.Controllers
             }
             catch
             {
-                return View();
+                return RedirectToAction("");
             }
+        }
+
+        public async Task<IActionResult> Add(int fitbookUserId)
+        {
+            var macroObjects = _context.FitbookUsersMacronutrients.Where(f => f.FitbookUserId == fitbookUserId).ToList();
+
+            if(macroObjects.Count != 0)
+            {
+                return RedirectToAction("Index", "FitbookUser");
+            }
+
+            var fitBookUser = _context.FitbookUsers.Where(f => f.FitbookUserId == fitbookUserId).Single();
+
+            FitbookUsersMacronutrients macros = new FitbookUsersMacronutrients()
+            {
+                FitbookUserId = fitbookUserId,
+                DailyCalories = DailyCalories.CalculateDailyCalories(fitBookUser)
+            };
+
+            await _context.FitbookUsersMacronutrients.AddAsync(macros);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "FitbookUser");
         }
     }
 }

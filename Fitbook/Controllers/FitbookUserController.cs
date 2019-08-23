@@ -85,18 +85,15 @@ namespace Fitbook.Controllers
             return View();
         }
 
-        public async Task<ActionResult> SubmitLifestyle(string lifestyle)
+        public ActionResult SubmitLifestyle(string lifestyle)
         {
             var currentSignedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var fitbookUser = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(currentSignedInUserId)).Single();
 
             fitbookUser.Lifestyle = lifestyle;
+            _context.SaveChanges();
 
-            /*DailyCalories.CalculateBMR();*/
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Index");
+            return RedirectToAction("Add", "FitbookUsersMacronutrients", new { fitbookUserId = fitbookUser.FitbookUserId });
         }
     }
 }
