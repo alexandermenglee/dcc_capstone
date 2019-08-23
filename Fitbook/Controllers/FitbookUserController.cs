@@ -7,6 +7,7 @@ using Fitbook.Data;
 using Fitbook.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Fitbook.Classes;
 
 namespace Fitbook.Controllers
 {
@@ -76,7 +77,7 @@ namespace Fitbook.Controllers
             await _context.FitbookUsers.AddAsync(fitbookUser);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("ChooseLifestyle");
         }
 
         public ActionResult ChooseLifestyle()
@@ -91,9 +92,11 @@ namespace Fitbook.Controllers
 
             fitbookUser.Lifestyle = lifestyle;
 
+            /*DailyCalories.CalculateBMR();*/
+
             await _context.SaveChangesAsync();
 
-            return View();
+            return RedirectToAction("Index");
         }
     }
 }

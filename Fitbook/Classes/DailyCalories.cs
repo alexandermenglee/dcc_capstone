@@ -10,18 +10,18 @@ namespace Fitbook.Classes
     {
         private static string male = "Male";
 
-        public static int CalculateBMR(string gender, int height, int weight, int age)
+       /* public static int CalculateBMR(FitbookUser fitbookUser)
         {
-            if(gender.Equals(male))
+            if(fitbookUser.Gender.Equals(male))
             {
-                return CalculateWithHarrisBenedictEquationMale(height, weight, age);
+                return CalculateWithHarrisBenedictEquationMale(fitbookUser.Height, fitbookUser.Weight, fitbookUser.Age);
             }
             else
             {
                 return CalculateWithHarrisBenedictEquationFemale(height, weight, age);
             }
         }
-
+*/
         // Male
         private static int CalculateWithHarrisBenedictEquationMale(int height, int weight, int age)
         {
