@@ -14,12 +14,12 @@
         <form asp-action="SubmitStatistics" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
+                <label asp-for="FirstName" class="control-label">First Name</label>
                 <input asp-for="FirstName" class="form-control" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
+                <label asp-for="LastName" class="control-label">Last Name</label>
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
@@ -30,13 +30,17 @@
             </div>
             <div class="form-group">
                 <label asp-for="Height" class="control-label"></label>
-                <input asp-for="Height" class="form-control" />
+                <input asp-for="Height" class="form-control" placeholder="inches"/>
                 <span asp-validation-for="Height" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Weight" class="control-label"></label>
-                <input asp-for="Weight" class="form-control" />
+                <input asp-for="Weight" class="form-control" placeholder="lbs" />
                 <span asp-validation-for="Weight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="radio" asp-for="Gender" name="gender" value="Male" /> Male
+                <input type="radio" asp-for="Gender" name="gender" value="Female" /> Female
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
