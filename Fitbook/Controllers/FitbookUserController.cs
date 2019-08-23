@@ -70,6 +70,7 @@ namespace Fitbook.Controllers
         public async Task<ActionResult> SubmitStatistics(FitbookUser fitbookUser)
         {
             var appUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             fitbookUser.ApplicationUserId = appUserId;
 
             await _context.FitbookUsers.AddAsync(fitbookUser);
