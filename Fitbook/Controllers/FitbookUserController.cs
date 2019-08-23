@@ -8,15 +8,18 @@ using Fitbook.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Fitbook.Classes;
+using Fitbook.Interfaces;
 
 namespace Fitbook.Controllers
 {
     public class FitbookUserController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public FitbookUserController(ApplicationDbContext context)
+        private readonly IFitbookUsersMacronutrientsRepsitory _fitbookUsersMacronutrientsRespository;
+        public FitbookUserController(ApplicationDbContext context, IFitbookUsersMacronutrientsRepsitory fitbookUsersMacronutrientsRespository)
         {
             _context = context;
+            _fitbookUsersMacronutrientsRespository = fitbookUsersMacronutrientsRespository;
         }
 
         // GET: FitbookUser
@@ -85,15 +88,20 @@ namespace Fitbook.Controllers
             return View();
         }
 
-        public ActionResult SubmitLifestyle(string lifestyle)
+        public async Task<IActionResult> SubmitLifestyle(string lifestyle)
         {
             var currentSignedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var fitbookUser = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(currentSignedInUserId)).Single();
 
             fitbookUser.Lifestyle = lifestyle;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
-            return RedirectToAction("Add", "FitbookUsersMacronutrients", new { fitbookUserId = fitbookUser.FitbookUserId });
+            if(!await _fitbookUsersMacronutrientsRespository.Add(fitbookUser.FitbookUserId))
+            {
+                return RedirectToAction("Index", "Index");
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

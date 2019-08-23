@@ -78,27 +78,5 @@ namespace Fitbook.Controllers
             }
         }
 
-        public async Task<IActionResult> Add(int fitbookUserId)
-        {
-            var macroObjects = _context.FitbookUsersMacronutrients.Where(f => f.FitbookUserId == fitbookUserId).ToList();
-
-            if(macroObjects.Count != 0)
-            {
-                return RedirectToAction("Index", "FitbookUser");
-            }
-
-            var fitBookUser = _context.FitbookUsers.Where(f => f.FitbookUserId == fitbookUserId).Single();
-
-            FitbookUsersMacronutrients macros = new FitbookUsersMacronutrients()
-            {
-                FitbookUserId = fitbookUserId,
-                DailyCalories = DailyCalories.CalculateDailyCalories(fitBookUser)
-            };
-
-            await _context.FitbookUsersMacronutrients.AddAsync(macros);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Index", "FitbookUser");
-        }
     }
 }
