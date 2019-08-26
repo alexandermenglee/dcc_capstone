@@ -11,8 +11,8 @@ namespace Fitbook.Interfaces
     {
         FitbookUsersMacronutrients FindByApplicationUserId(string appUserId);
         Task<bool> Add(int fitbookUserId);
-        void AddMacronutrients(int macroId, string recommendedSplit);
-        void AddMacronutrients(int macroId, int carbs, int protein, int fat);
-        void CalculateMacros(int fitnessGoalValue, string appUserId);
+        void CalculateCaloricGoal(int fitnessGoalValue, string appUserId);
+        void AddPredefinedMacronutrients(int macroId, string recommendedSplit);
+        void AddCustomMacronutrients(int macroId, int carbs, int protein, int fat);
     }
 }

@@ -14,7 +14,7 @@ namespace Fitbook.Controllers
 {
     public class FitbookUsersMacronutrientsController : Controller
     {
-        IFitbookUsersMacronutrientsRepsitory _fitbookUsersMacronutrientsRepsitory;
+        IFitbookUsersMacronutrientsRepsitory _fitbookUsersMacronutrientsRepsitory; 
 
         public FitbookUsersMacronutrientsController(IFitbookUsersMacronutrientsRepsitory fitbookUsersMacronutrientsRepsitory)
         {
@@ -86,19 +86,23 @@ namespace Fitbook.Controllers
         }
 
         [HttpPost]
-        public void SubmitMacronutrientSplit([FromForm]IFormCollection form)
+        public ActionResult SubmitMacronutrientSplit([FromForm]IFormCollection form)
         {
             var appUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var macros = _fitbookUsersMacronutrientsRepsitory.FindByApplicationUserId(appUserId);
-            _fitbookUsersMacronutrientsRepsitory.AddMacronutrients(macros.MacronutrientId, form["macro-split"]);
+            _fitbookUsersMacronutrientsRepsitory.AddPredefinedMacronutrients(macros.MacronutrientId, form["macro-split"]);
+
+            return RedirectToAction("Index", "FitbookUser");
         }
 
         [HttpPost]
-        public void SubmitCustomMacronutrientSplit([FromForm]int carbs, int protein, int fat)
+        public ActionResult SubmitCustomMacronutrientSplit([FromForm]int carbs, int protein, int fat)
         {
             var appUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var macros = _fitbookUsersMacronutrientsRepsitory.FindByApplicationUserId(appUserId);
-            _fitbookUsersMacronutrientsRepsitory.AddMacronutrients(macros.MacronutrientId, carbs, protein, fat);
+            _fitbookUsersMacronutrientsRepsitory.AddCustomMacronutrients(macros.MacronutrientId, carbs, protein, fat);
+
+            return RedirectToAction("Index", "FitbookUser");
         }
 
         public ActionResult SelectDietPlan()
@@ -114,14 +118,14 @@ namespace Fitbook.Controllers
 
             try
             {
-                _fitbookUsersMacronutrientsRepsitory.CalculateMacros(Convert.ToInt32(fitnessGoalValue), appUserId);
+                _fitbookUsersMacronutrientsRepsitory.CalculateCaloricGoal(Convert.ToInt32(fitnessGoalValue), appUserId);
             }
             catch(Exception e)
             {
                 return RedirectToAction("Index", "Home");
             }
 
-            return View();
+            return RedirectToAction("SelectMacronutrientSplit");
         }
 
     }

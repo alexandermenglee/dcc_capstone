@@ -100,7 +100,7 @@ namespace Fitbook.Controllers
                 return RedirectToAction("Index", "Index");
             }
 
-            return RedirectToAction("SelectDietPlan", "FitbookUsersMascronutrients");
+            return RedirectToAction("SelectDietPlan", "FitbookUsersMacronutrients");
         }
     }
 }

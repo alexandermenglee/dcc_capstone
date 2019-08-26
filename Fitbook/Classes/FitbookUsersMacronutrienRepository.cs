@@ -50,27 +50,39 @@ namespace Fitbook.Classes
             return true;
         }
 
-        public void AddMacronutrients(int macroId, string recommendedSplit)
+        public void CalculateCaloricGoal(int fitnessGoalValue, string appUserId)
         {
+            var fitbookUser = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(appUserId)).Single();
+            var macros = _context.FitbookUsersMacronutrients.Where(m => m.FitbookUserId == fitbookUser.FitbookUserId).Single();
+            int calories = DailyCalories.CalculateFitnessGoals(macros.DailyCalories, fitnessGoalValue);
+
+            macros.DailyCalories = calories;
+            _context.SaveChanges();
+        }
+
+        public void AddPredefinedMacronutrients(int macroId, string recommendedSplit)
+        {
+            
             FitbookUsersMacronutrients macros;
+
             switch(recommendedSplit)
             {
                 case "high carbs":
-                    macros = _context.FitbookUsersMacronutrients.Where(m => m.FitbookUserId == macroId).Single();
+                    macros = _context.FitbookUsersMacronutrients.Where(m => m.MacronutrientId == macroId).Single();
                     macros.Carbohydrates = Convert.ToInt32((.4 * macros.DailyCalories) / 4);
                     macros.Protein = Convert.ToInt32((.3 * macros.DailyCalories) / 4);
                     macros.Fat = Convert.ToInt32((.3 * macros.DailyCalories) / 9);
                     _context.SaveChanges();
                     break;
                 case "high protein":
-                    macros = _context.FitbookUsersMacronutrients.Where(m => m.FitbookUserId == macroId).Single();
+                    macros = _context.FitbookUsersMacronutrients.Where(m => m.MacronutrientId == macroId).Single();
                     macros.Carbohydrates = Convert.ToInt32((.4 * macros.DailyCalories) / 4);
                     macros.Protein = Convert.ToInt32((.4 * macros.DailyCalories) / 4);
                     macros.Fat = Convert.ToInt32((.2 * macros.DailyCalories) / 9);
                     _context.SaveChanges();
                     break;
                 case "balanced":
-                    macros = _context.FitbookUsersMacronutrients.Where(m => m.FitbookUserId == macroId).Single();
+                    macros = _context.FitbookUsersMacronutrients.Where(m => m.MacronutrientId == macroId).Single();
                     macros.Carbohydrates = Convert.ToInt32((.35 * macros.DailyCalories) / 4);
                     macros.Protein = Convert.ToInt32((.35 * macros.DailyCalories) / 4);
                     macros.Fat = Convert.ToInt32((.3 * macros.DailyCalories) / 9);
@@ -81,7 +93,7 @@ namespace Fitbook.Classes
             }
         }
 
-        public void AddMacronutrients(int macroId, int carbs, int protein, int fat)
+        public void AddCustomMacronutrients(int macroId, int carbs, int protein, int fat)
         {
             FitbookUsersMacronutrients macros = _context.FitbookUsersMacronutrients.Find(macroId);
             double carbPercentage = (double)carbs / (double)100;
@@ -93,27 +105,6 @@ namespace Fitbook.Classes
             macros.Fat = Convert.ToInt32((fatPercentage * macros.DailyCalories) / 9);
 
             _context.SaveChanges();
-        }
-
-        public void CalculateMacros(int fitnessGoalValue, string appUserId)
-        {
-
-            try
-            {
-                var fitbookUser = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(appUserId)).Single();
-                var macros = _context.FitbookUsersMacronutrients.Where(m => m.FitbookUserId == fitbookUser.FitbookUserId).Single();
-
-                int calories = DailyCalories.CalculateFitnessGoals(macros.DailyCalories, fitnessGoalValue);
-            }
-            catch
-            {
-
-            }
-        }
-
-        public void CalculateFitnessGoal(int value)
-        {
-            
         }
     }
 }
