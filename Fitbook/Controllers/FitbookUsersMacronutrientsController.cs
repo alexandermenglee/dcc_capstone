@@ -98,6 +98,7 @@ namespace Fitbook.Controllers
         {
             var appUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var macros = _fitbookUsersMacronutrientsRepsitory.FindByApplicationUserId(appUserId);
+            _fitbookUsersMacronutrientsRepsitory.AddMacronutrients(macros.MacronutrientId, carbs, protein, fat);
         }
 
         public ActionResult SelectDietPlan()

@@ -81,6 +81,20 @@ namespace Fitbook.Classes
             }
         }
 
+        public void AddMacronutrients(int macroId, int carbs, int protein, int fat)
+        {
+            FitbookUsersMacronutrients macros = _context.FitbookUsersMacronutrients.Find(macroId);
+            double carbPercentage = (double)carbs / (double)100;
+            double proteinPercentage = (double)protein / (double)100;
+            double fatPercentage = (double)fat / (double)100;
+
+            macros.Carbohydrates = Convert.ToInt32((carbPercentage * macros.DailyCalories) / 4);
+            macros.Protein = Convert.ToInt32((proteinPercentage * macros.DailyCalories) / 4);
+            macros.Fat = Convert.ToInt32((fatPercentage * macros.DailyCalories) / 9);
+
+            _context.SaveChanges();
+        }
+
         public void CalculateMacros(int fitnessGoalValue, string appUserId)
         {
 
@@ -90,22 +104,11 @@ namespace Fitbook.Classes
                 var macros = _context.FitbookUsersMacronutrients.Where(m => m.FitbookUserId == fitbookUser.FitbookUserId).Single();
 
                 int calories = DailyCalories.CalculateFitnessGoals(macros.DailyCalories, fitnessGoalValue);
-
-                // 40/40/20
-
-                // 30/40/30
-
-                // 35/35/30
             }
             catch
             {
 
             }
-        }
-
-        public void AddMacronutrients(int macroId, int carbs, int protein, int fat)
-        {
-            
         }
 
         public void CalculateFitnessGoal(int value)
