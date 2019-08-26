@@ -1,5 +1,4 @@
 ﻿(function () {
-    console.log('from js file');
     // grab elements
     let showCustomSplitButton = document.getElementById("show-custom-split-form");
     let prebuiltMacroSplitsForm = document.getElementById("prebuilt-macro-splits-form");
@@ -15,7 +14,5 @@
             customMacroSplitsForm.style.display = "none";
             prebuiltMacroSplitsForm.style.display = "block";
         }
-        
-        
     });
 })();

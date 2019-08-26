@@ -50,9 +50,35 @@ namespace Fitbook.Classes
             return true;
         }
 
-        public void CalculateFitnessGoal(int value)
+        public void AddMacronutrients(int macroId, string recommendedSplit)
         {
-            
+            FitbookUsersMacronutrients macros;
+            switch(recommendedSplit)
+            {
+                case "high carbs":
+                    macros = _context.FitbookUsersMacronutrients.Where(m => m.FitbookUserId == macroId).Single();
+                    macros.Carbohydrates = Convert.ToInt32((.4 * macros.DailyCalories) / 4);
+                    macros.Protein = Convert.ToInt32((.3 * macros.DailyCalories) / 4);
+                    macros.Fat = Convert.ToInt32((.3 * macros.DailyCalories) / 9);
+                    _context.SaveChanges();
+                    break;
+                case "high protein":
+                    macros = _context.FitbookUsersMacronutrients.Where(m => m.FitbookUserId == macroId).Single();
+                    macros.Carbohydrates = Convert.ToInt32((.4 * macros.DailyCalories) / 4);
+                    macros.Protein = Convert.ToInt32((.4 * macros.DailyCalories) / 4);
+                    macros.Fat = Convert.ToInt32((.2 * macros.DailyCalories) / 9);
+                    _context.SaveChanges();
+                    break;
+                case "balanced":
+                    macros = _context.FitbookUsersMacronutrients.Where(m => m.FitbookUserId == macroId).Single();
+                    macros.Carbohydrates = Convert.ToInt32((.35 * macros.DailyCalories) / 4);
+                    macros.Protein = Convert.ToInt32((.35 * macros.DailyCalories) / 4);
+                    macros.Fat = Convert.ToInt32((.3 * macros.DailyCalories) / 9);
+                    _context.SaveChanges();
+                    break;
+                default:
+                    break;
+            }
         }
 
         public void CalculateMacros(int fitnessGoalValue, string appUserId)
@@ -66,7 +92,7 @@ namespace Fitbook.Classes
                 int calories = DailyCalories.CalculateFitnessGoals(macros.DailyCalories, fitnessGoalValue);
 
                 // 40/40/20
-                
+
                 // 30/40/30
 
                 // 35/35/30
@@ -75,6 +101,16 @@ namespace Fitbook.Classes
             {
 
             }
+        }
+
+        public void AddMacronutrients(int macroId, int carbs, int protein, int fat)
+        {
+            
+        }
+
+        public void CalculateFitnessGoal(int value)
+        {
+            
         }
     }
 }
