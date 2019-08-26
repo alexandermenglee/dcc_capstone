@@ -6,6 +6,7 @@ using Fitbook.Interfaces;
 using Fitbook.Models;
 using Fitbook.Data;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Fitbook.Classes
 {
@@ -16,6 +17,15 @@ namespace Fitbook.Classes
         public FitbookUsersMacronutrienRepository(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+        public FitbookUsersMacronutrients FindByApplicationUserId(string appUserId)
+        {
+            FitbookUsersMacronutrients macros;
+            var fitbookUser = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(appUserId)).Single();
+            macros = _context.FitbookUsersMacronutrients.Where(m => m.FitbookUserId == fitbookUser.FitbookUserId).Single();
+
+            return macros;
         }
         public async Task<bool> Add(int fitbookUserId)
         {
@@ -40,9 +50,31 @@ namespace Fitbook.Classes
             return true;
         }
 
-        public Task CalculateMacros()
+        public void CalculateFitnessGoal(int value)
         {
-            throw new NotImplementedException();
+            
+        }
+
+        public void CalculateMacros(int fitnessGoalValue, string appUserId)
+        {
+
+            try
+            {
+                var fitbookUser = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(appUserId)).Single();
+                var macros = _context.FitbookUsersMacronutrients.Where(m => m.FitbookUserId == fitbookUser.FitbookUserId).Single();
+
+                int calories = DailyCalories.CalculateFitnessGoals(macros.DailyCalories, fitnessGoalValue);
+
+                // 40/40/20
+                
+                // 30/40/30
+
+                // 35/35/30
+            }
+            catch
+            {
+
+            }
         }
     }
 }

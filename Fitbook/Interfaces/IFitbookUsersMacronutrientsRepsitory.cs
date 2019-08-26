@@ -9,7 +9,8 @@ namespace Fitbook.Interfaces
 {
     public interface IFitbookUsersMacronutrientsRepsitory
     {
+        FitbookUsersMacronutrients FindByApplicationUserId(string appUserId);
         Task<bool> Add(int fitbookUserId);
-        Task CalculateMacros();
+        void CalculateMacros(int fitnessGoalValue, string appUserId);
     }
 }

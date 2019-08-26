@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Fitbook.Models;
 using Fitbook.Classes;
 using Fitbook.Interfaces;
+using System.Security.Claims;
 
 namespace Fitbook.Controllers
 {
@@ -79,6 +80,25 @@ namespace Fitbook.Controllers
             }
         }
 
+        public ActionResult SelectMacronutrientSplit()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public void SubmitMacronutrientSplit([FromForm]IFormCollection form)
+        {
+            var appUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var macros = _fitbookUsersMacronutrientsRepsitory.FindByApplicationUserId(appUserId);
+        }
+
+        [HttpPost]
+        public void SubmitCustomMacronutrientSplit([FromForm]int carbs, int protein, int fat)
+        {
+            var appUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var macros = _fitbookUsersMacronutrientsRepsitory.FindByApplicationUserId(appUserId);
+        }
+
         public ActionResult SelectDietPlan()
         {
             return View();
@@ -88,10 +108,11 @@ namespace Fitbook.Controllers
         public ActionResult SubmitDietPlan([FromForm]IFormCollection form)
         {
             var fitnessGoalValue = form["fitness-goal"];
+            var appUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             try
             {
-                int x = Convert.ToInt32(fitnessGoalValue);
+                _fitbookUsersMacronutrientsRepsitory.CalculateMacros(Convert.ToInt32(fitnessGoalValue), appUserId);
             }
             catch(Exception e)
             {

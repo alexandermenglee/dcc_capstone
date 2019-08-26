@@ -7,7 +7,6 @@ using Fitbook.Data;
 using Fitbook.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Fitbook.Classes;
 using Fitbook.Interfaces;
 
 namespace Fitbook.Controllers
