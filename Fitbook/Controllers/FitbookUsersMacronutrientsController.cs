@@ -7,16 +7,17 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Fitbook.Models;
 using Fitbook.Classes;
+using Fitbook.Interfaces;
 
 namespace Fitbook.Controllers
 {
     public class FitbookUsersMacronutrientsController : Controller
     {
-        ApplicationDbContext _context;
+        IFitbookUsersMacronutrientsRepsitory _fitbookUsersMacronutrientsRepsitory;
 
-        public FitbookUsersMacronutrientsController(ApplicationDbContext context)
+        public FitbookUsersMacronutrientsController(IFitbookUsersMacronutrientsRepsitory fitbookUsersMacronutrientsRepsitory)
         {
-            _context = context;
+            _fitbookUsersMacronutrientsRepsitory = fitbookUsersMacronutrientsRepsitory;
         }
 
         // GET: FitbookUsersMacronutrients
@@ -76,6 +77,28 @@ namespace Fitbook.Controllers
             {
                 return RedirectToAction("");
             }
+        }
+
+        public ActionResult SelectDietPlan()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SubmitDietPlan([FromForm]IFormCollection form)
+        {
+            var fitnessGoalValue = form["fitness-goal"];
+
+            try
+            {
+                int x = Convert.ToInt32(fitnessGoalValue);
+            }
+            catch(Exception e)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View();
         }
 
     }

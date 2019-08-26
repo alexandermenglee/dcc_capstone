@@ -39,5 +39,10 @@ namespace Fitbook.Classes
 
             return true;
         }
+
+        public Task CalculateMacros()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

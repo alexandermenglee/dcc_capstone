@@ -10,5 +10,6 @@ namespace Fitbook.Interfaces
     public interface IFitbookUsersMacronutrientsRepsitory
     {
         Task<bool> Add(int fitbookUserId);
+        Task CalculateMacros();
     }
 }
