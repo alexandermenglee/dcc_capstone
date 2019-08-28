@@ -18,7 +18,18 @@ namespace Fitbook.Classes
         }
         public void DisplayDailyLog(string appUserId)
         {
-            // check if current day object exists in the database, if not, create a new day object with 
+            DateTime currentDay = DateTime.Today;
+            Day today = new Day();
+            try
+            {
+                FitbookUser fitbookUser = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(appUserId)).Single();
+
+                // compare 
+            }
+            catch(Exception E)
+            {
+                // should redirect to a view with an error message
+            }
         }
     }
 }
