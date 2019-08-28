@@ -8,6 +8,8 @@ namespace Fitbook.Interfaces
 {
     public interface IDayRepository
     {
-        void DisplayDailyLog(string appUserId);
+        Task Create(string appUserId);
+        Day DisplayDailyLog(string appUserId, DateTime day);
+        bool CheckDateExists(string appUserId, DateTime day);
     }
 }

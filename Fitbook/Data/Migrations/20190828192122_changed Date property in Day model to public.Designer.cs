@@ -4,14 +4,16 @@ using Fitbook.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Fitbook.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190828192122_changed Date property in Day model to public")]
+    partial class changedDatepropertyinDaymodeltopublic
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,13 +65,9 @@ namespace Fitbook.Data.Migrations
 
                     b.Property<int>("Meals");
 
-                    b.Property<int?>("NutritionMacronutrientId");
-
                     b.HasKey("DayId");
 
                     b.HasIndex("FitbookUserId");
-
-                    b.HasIndex("NutritionMacronutrientId");
 
                     b.ToTable("Days");
                 });
@@ -353,10 +351,6 @@ namespace Fitbook.Data.Migrations
                         .WithMany()
                         .HasForeignKey("FitbookUserId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Fitbook.Models.FitbookUsersMacronutrients", "Nutrition")
-                        .WithMany()
-                        .HasForeignKey("NutritionMacronutrientId");
                 });
 
             modelBuilder.Entity("Fitbook.Models.FitbookUser", b =>

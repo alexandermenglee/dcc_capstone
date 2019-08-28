@@ -12,16 +12,24 @@ namespace Fitbook.Controllers
     public class DayController : Controller
     {
         IDayRepository _dayRepository;
-        string appUserId;
         public DayController(IDayRepository dayRepository)
         {
             _dayRepository = dayRepository;
-            appUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
         // GET: Day
         public ActionResult Index()
         {
-            _dayRepository.DisplayDailyLog(appUserId);
+            string appUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            DateTime today = DateTime.Today;
+
+            // check if current user has a day already
+            if(_dayRepository.CheckDateExists(appUserId, today))
+            {
+                return View(_dayRepository.DisplayDailyLog(appUserId, today));
+            }
+
+            _dayRepository.Create(appUserId);
+
             return View();
         }
 

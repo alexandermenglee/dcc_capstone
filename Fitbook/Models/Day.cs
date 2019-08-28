@@ -11,10 +11,10 @@ namespace Fitbook.Models
     {
         [Key]
         public int DayId { get; set; }
-        DateTime Date { get; set; }
+        public DateTime Date { get; set; }
         public List<Food> Foods { get; set; }
         public int Meals { get; set; }
-        FitbookUsersMacronutrients Nutrition { get; set; }
+        public FitbookUsersMacronutrients Nutrition { get; set; }
         public int FitbookUserId { get; set; }
         [ForeignKey("FitbookUserId")]
         public FitbookUser FitbookUser { get; set; }
