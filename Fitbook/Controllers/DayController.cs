@@ -5,19 +5,23 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Fitbook.Interfaces;
+using System.Security.Claims;
 
 namespace Fitbook.Controllers
 {
     public class DayController : Controller
     {
         IDayRepository _dayRepository;
+        string appUserId;
         public DayController(IDayRepository dayRepository)
         {
             _dayRepository = dayRepository;
+            appUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
         // GET: Day
         public ActionResult Index()
         {
+            _dayRepository.DisplayDailyLog(appUserId);
             return View();
         }
 
@@ -64,29 +68,6 @@ namespace Fitbook.Controllers
             try
             {
                 // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Day/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Day/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
 
                 return RedirectToAction(nameof(Index));
             }

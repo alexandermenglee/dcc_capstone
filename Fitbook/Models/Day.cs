@@ -11,6 +11,7 @@ namespace Fitbook.Models
     {
         [Key]
         public int DayId { get; set; }
+        DateTime day { get; set; }
         public List<Food> Foods { get; set; }
         public int Meals { get; set; }
         FitbookUsersMacronutrients Nutrition { get; set; }

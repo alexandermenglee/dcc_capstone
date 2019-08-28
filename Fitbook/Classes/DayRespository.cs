@@ -16,9 +16,9 @@ namespace Fitbook.Classes
         {
             _context = context;
         }
-        public IActionResult Index(Day id)
+        public void DisplayDailyLog(string appUserId)
         {
-            throw new NotImplementedException();
+            // check if current day object exists in the database, if not, create a new day object with 
         }
     }
 }
