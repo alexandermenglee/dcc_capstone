@@ -12,6 +12,7 @@ namespace Fitbook.Controllers
     {
         public IActionResult Index()
         {
+            Food food1 = new Food();
             return View();
         }
 

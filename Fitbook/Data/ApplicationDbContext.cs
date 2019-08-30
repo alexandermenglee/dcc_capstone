@@ -35,6 +35,60 @@ namespace Fitbook.Data
             modelBuilder.Entity<MealFood>().HasKey(mf => new { mf.MealId, mf.FoodId });
             modelBuilder.Entity<MealFood>().HasOne(mf => mf.Meal).WithMany(mf => mf.MealFoods).HasForeignKey(mf => mf.MealId);
             modelBuilder.Entity<MealFood>().HasOne(mf => mf.Food).WithMany(mf => mf.MealFoods).HasForeignKey(mf => mf.FoodId);
+
+            // Seeding Food table
+            List<Food> FoodSeedingList = new List<Food>();
+
+            Food food1 = new Food()
+            {
+                FoodId = -1,
+                FoodName = "chicken breast",
+                Carbohydrates = 0,
+                Protein = 25,
+                Fat = 1,
+                Amount = 4
+            };
+            Food food2 = new Food()
+            {
+                FoodId = -2,
+                FoodName = "brown rice",
+                Carbohydrates = 37,
+                Protein = 7,
+                Fat = 0,
+                Amount = 1
+            };
+            Food food3 = new Food()
+            {
+                FoodId = -3,
+                FoodName = "olive oil",
+                Carbohydrates = 0,
+                Protein = 0,
+                Fat = 16,
+                Amount = 2
+            };
+
+            FoodSeedingList.Add(food1);
+            FoodSeedingList.Add(food2);
+            FoodSeedingList.Add(food3);
+
+            modelBuilder.Entity<Food>().HasData(FoodSeedingList);
+
+            // Seeding Meal Table
+            List<Meal> MealSeedingList = new List<Meal>();
+
+            Meal meal1 = new Meal()
+            {
+                MealId = -1
+            };
+            Meal meal2 = new Meal()
+            {
+                MealId = -2
+            };
+
+            MealSeedingList.Add(meal1);
+            MealSeedingList.Add(meal2);
+
+            modelBuilder.Entity<Meal>().HasData(MealSeedingList);
         }
     }
 }

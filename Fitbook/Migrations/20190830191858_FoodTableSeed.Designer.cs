@@ -4,14 +4,16 @@ using Fitbook.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Fitbook.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190830191858_FoodTableSeed")]
+    partial class FoodTableSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -190,16 +192,6 @@ namespace Fitbook.Migrations
                     b.HasIndex("DayId");
 
                     b.ToTable("Meals");
-
-                    b.HasData(
-                        new
-                        {
-                            MealId = -1
-                        },
-                        new
-                        {
-                            MealId = -2
-                        });
                 });
 
             modelBuilder.Entity("Fitbook.Models.MealFood", b =>

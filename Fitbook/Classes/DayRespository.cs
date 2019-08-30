@@ -55,6 +55,18 @@ namespace Fitbook.Classes
 
         public Day DisplayDailyLog(string appUserId, DateTime date)
         {
+            var brownRice = _context.Foods.Where(f => f.FoodId == -2).Single();
+
+            Meal firstMeal = new Meal();
+            MealFood firstMealFood = new MealFood()
+            {
+                Meal = firstMeal,
+                Food = brownRice
+            };
+
+
+
+
             int fitbookUserId = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(appUserId)).Single().FitbookUserId;
             Day desiredDisplayDay = _context.Days.Where(d => d.Date == date && d.FitbookUserId == fitbookUserId).Single();
 
