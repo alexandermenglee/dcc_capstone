@@ -9,7 +9,7 @@ namespace Fitbook.Interfaces
     public interface IDayRepository
     {
         Task Create(string appUserId);
-        Day DisplayDailyLog(string appUserId, DateTime day);
-        bool CheckDateExists(string appUserId, DateTime day);
+        bool CheckDateExists(string appUserId);
+        Day DisplayDailyLog(string appUserId, DateTime date);
     }
 }

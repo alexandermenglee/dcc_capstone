@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Fitbook.Interfaces;
 using System.Security.Claims;
+using Fitbook.Models;
 
 namespace Fitbook.Controllers
 {
@@ -19,16 +20,21 @@ namespace Fitbook.Controllers
         // GET: Day
         public ActionResult Index()
         {
+
             string appUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             DateTime today = DateTime.Today;
 
             // check if current user has a day already
-            if(_dayRepository.CheckDateExists(appUserId, today))
+            if(_dayRepository.CheckDateExists(appUserId))
             {
-                return View(_dayRepository.DisplayDailyLog(appUserId, today));
+
+                Day currentDailyLog = _dayRepository.DisplayDailyLog(appUserId, today);
+
+                return View(currentDailyLog);
             }
 
             _dayRepository.Create(appUserId);
+            _dayRepository.DisplayDailyLog(appUserId, today);
 
             return View();
         }

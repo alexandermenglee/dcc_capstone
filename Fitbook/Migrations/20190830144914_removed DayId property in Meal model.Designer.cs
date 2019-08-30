@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Fitbook.Data.Migrations
+namespace Fitbook.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190821204916_Added models for application")]
-    partial class Addedmodelsforapplication
+    [Migration("20190830144914_removed DayId property in Meal model")]
+    partial class removedDayIdpropertyinMealmodel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,162 @@ namespace Fitbook.Data.Migrations
                 .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Fitbook.Models.CustomRecipe", b =>
+                {
+                    b.Property<int>("CustomRecipeId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Calories");
+
+                    b.Property<int>("CaloriesPerServing");
+
+                    b.Property<int>("Carbohydrates");
+
+                    b.Property<string>("CustomRecipeName");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<int>("Fat");
+
+                    b.Property<int>("FitbookUserId");
+
+                    b.Property<int>("Protein");
+
+                    b.Property<double?>("Servings");
+
+                    b.HasKey("CustomRecipeId");
+
+                    b.HasIndex("FitbookUserId");
+
+                    b.ToTable("CustomRecipes");
+                });
+
+            modelBuilder.Entity("Fitbook.Models.Day", b =>
+                {
+                    b.Property<int>("DayId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<int>("FitbookUserId");
+
+                    b.HasKey("DayId");
+
+                    b.HasIndex("FitbookUserId");
+
+                    b.ToTable("Days");
+                });
+
+            modelBuilder.Entity("Fitbook.Models.FitbookUser", b =>
+                {
+                    b.Property<int>("FitbookUserId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("Age");
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<int>("BMR");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("Gender");
+
+                    b.Property<int?>("Height");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<string>("Lifestyle");
+
+                    b.Property<int?>("Weight");
+
+                    b.HasKey("FitbookUserId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("FitbookUsers");
+                });
+
+            modelBuilder.Entity("Fitbook.Models.FitbookUsersMacronutrients", b =>
+                {
+                    b.Property<int>("MacronutrientId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Carbohydrates");
+
+                    b.Property<int>("DailyCalories");
+
+                    b.Property<int>("Fat");
+
+                    b.Property<int>("FitbookUserId");
+
+                    b.Property<int>("Protein");
+
+                    b.HasKey("MacronutrientId");
+
+                    b.HasIndex("FitbookUserId");
+
+                    b.ToTable("FitbookUsersMacronutrients");
+                });
+
+            modelBuilder.Entity("Fitbook.Models.Food", b =>
+                {
+                    b.Property<int>("FoodId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Amount");
+
+                    b.Property<int>("Calories");
+
+                    b.Property<int>("Carbohydrates");
+
+                    b.Property<int>("Fat");
+
+                    b.Property<string>("FoodName");
+
+                    b.Property<int?>("MealId");
+
+                    b.Property<int>("Protein");
+
+                    b.HasKey("FoodId");
+
+                    b.HasIndex("MealId");
+
+                    b.ToTable("Foods");
+                });
+
+            modelBuilder.Entity("Fitbook.Models.Meal", b =>
+                {
+                    b.Property<int>("MealId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("DayId");
+
+                    b.HasKey("MealId");
+
+                    b.HasIndex("DayId");
+
+                    b.ToTable("Meals");
+                });
+
+            modelBuilder.Entity("Fitbook.Models.RecommendedRecipe", b =>
+                {
+                    b.Property<int>("RecommendedRecipeId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("RecommendedRecipeId");
+
+                    b.ToTable("ReccommendedRecipes");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -194,6 +350,51 @@ namespace Fitbook.Data.Migrations
                     b.Property<string>("Name");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
+                });
+
+            modelBuilder.Entity("Fitbook.Models.CustomRecipe", b =>
+                {
+                    b.HasOne("Fitbook.Models.FitbookUser", "FitbookUser")
+                        .WithMany()
+                        .HasForeignKey("FitbookUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Fitbook.Models.Day", b =>
+                {
+                    b.HasOne("Fitbook.Models.FitbookUser", "FitbookUser")
+                        .WithMany()
+                        .HasForeignKey("FitbookUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Fitbook.Models.FitbookUser", b =>
+                {
+                    b.HasOne("Fitbook.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+                });
+
+            modelBuilder.Entity("Fitbook.Models.FitbookUsersMacronutrients", b =>
+                {
+                    b.HasOne("Fitbook.Models.FitbookUser", "FitbookUser")
+                        .WithMany()
+                        .HasForeignKey("FitbookUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Fitbook.Models.Food", b =>
+                {
+                    b.HasOne("Fitbook.Models.Meal")
+                        .WithMany("Foods")
+                        .HasForeignKey("MealId");
+                });
+
+            modelBuilder.Entity("Fitbook.Models.Meal", b =>
+                {
+                    b.HasOne("Fitbook.Models.Day", "Day")
+                        .WithMany("Meals")
+                        .HasForeignKey("DayId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

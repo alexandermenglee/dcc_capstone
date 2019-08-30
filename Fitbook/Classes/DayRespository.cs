@@ -26,14 +26,15 @@ namespace Fitbook.Classes
 
                 today.FitbookUserId = fitbookUserId;
                 today.Date = currentDay;
-                today.Nutrition = fitbookUsersMacronutrients;
 
                 await _context.AddAsync(today);
                 await _context.SaveChangesAsync();
         }
 
-        public bool CheckDateExists(string appUserId, DateTime day)
+        public bool CheckDateExists(string appUserId)
         {
+            DateTime day = DateTime.Today;
+
             try
             {
                 int fitbookUserId = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(appUserId)).Single().FitbookUserId;
@@ -52,10 +53,14 @@ namespace Fitbook.Classes
             }
         }
 
-        public Day DisplayDailyLog(string appUserId, DateTime day)
+        public Day DisplayDailyLog(string appUserId, DateTime date)
         {
-            // search database for Day with current day and fitbookuserId
-            throw new NotImplementedException();
+            int fitbookUserId = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(appUserId)).Single().FitbookUserId;
+            Day desiredDisplayDay = _context.Days.Where(d => d.Date == date && d.FitbookUserId == fitbookUserId).Single();
+
+            _context.SaveChanges();
+
+            return desiredDisplayDay;
         }
     }
 }
