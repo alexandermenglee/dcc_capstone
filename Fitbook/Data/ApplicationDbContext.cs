@@ -27,7 +27,14 @@ namespace Fitbook.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Creating one to many relationship between Day and Meal
             modelBuilder.Entity<Day>().HasMany(d => d.Meals).WithOne(m => m.Day);
+
+            // Creating junction table for Meal and Food (many to many relationship)
+            modelBuilder.Entity<MealFood>().HasKey(mf => new { mf.MealId, mf.FoodId });
+            modelBuilder.Entity<MealFood>().HasOne(mf => mf.Meal).WithMany(mf => mf.MealFoods).HasForeignKey(mf => mf.MealId);
+            modelBuilder.Entity<MealFood>().HasOne(mf => mf.Food).WithMany(mf => mf.MealFoods).HasForeignKey(mf => mf.FoodId);
         }
     }
 }
