@@ -1,9 +1,12 @@
-﻿@model Fitbook.Models.Day;
+﻿@model Fitbook.ViewModel.IndexViewModel;
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Index</h1>
+<div>
+    @Model.MealsWithFood[0][0].MealFoods[0].FoodId
+</div>
 
 

@@ -6,6 +6,8 @@ using Fitbook.Data;
 using Fitbook.Interfaces;
 using Fitbook.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Fitbook.ViewModel;
 
 namespace Fitbook.Classes
 {
@@ -53,26 +55,31 @@ namespace Fitbook.Classes
             }
         }
 
-        public Day DisplayDailyLog(string appUserId, DateTime date)
+        public List<List<Meal>> GetMeals(string appUserId, DateTime date)
         {
-            var brownRice = _context.Foods.Where(f => f.FoodId == -2).Single();
+            // Query for current user 
+            // Query for specified day associated to found user
+            // Query for meals where meals.DayId equals specified day
+            // For each meal, run a query to retrieve all foods in each meal (MealFood)
 
-            Meal firstMeal = new Meal();
-            MealFood firstMealFood = new MealFood()
-            {
-                Meal = firstMeal,
-                Food = brownRice
-            };
+            List<List<Meal>> allMealsForDay = new List<List<Meal>>();
 
-
-
-
+            // Gets current user
             int fitbookUserId = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(appUserId)).Single().FitbookUserId;
-            Day desiredDisplayDay = _context.Days.Where(d => d.Date == date && d.FitbookUserId == fitbookUserId).Single();
+            // Gets current day by associtaed user and associted day
+            // Includes all meals for that day
+            Day desiredDisplayDay = _context.Days.Include("Meals").Where(d => d.Date == date && d.FitbookUserId == fitbookUserId).Single();
+            
+            // Takes the MealId of each meal in desiredDisplayDay.Meals and queries for associated MealFoods list
+            // Adds the list of type Meal to allMealsForDay list
+            for(int i = 0; i < desiredDisplayDay.Meals.Count; i++)
+            {
+                IQueryable<Meal> iqueryableMeals = _context.Meals.Include("MealFoods").Where(m => m.MealId == desiredDisplayDay.Meals[i].MealId);
 
-            _context.SaveChanges();
+                allMealsForDay.Add(iqueryableMeals.ToList());
+            }
 
-            return desiredDisplayDay;
+            return allMealsForDay;
         }
     }
 }

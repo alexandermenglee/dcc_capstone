@@ -14,7 +14,7 @@ namespace Fitbook.Models
         public int MealId { get; set; }
 
 
-        public List<MealFood> MealFoods { get; set; }
+        public List<MealFood> MealFoods { get; set; } = new List<MealFood>();
         public Day Day { get; set; }
     }
 }

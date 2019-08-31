@@ -6,9 +6,9 @@ using Fitbook.Models;
 
 namespace Fitbook.ViewModel
 {
-    public class MealsViewModel
+    public class IndexViewModel
     {
-        List<MealFood> MealsWithFood { get; set; }
-        Day Day { get; set; }
+        public List<List<Meal>> MealsWithFood { get; set; }
+        public Day Day { get; set; }
     }
 }

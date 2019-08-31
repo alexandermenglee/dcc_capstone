@@ -14,7 +14,7 @@ namespace Fitbook.Models
         public DateTime Date { get; set; }
 
         // List of Meals
-        public virtual List<Meal> Meals { get; set; }
+        public List<Meal> Meals { get; set; } = new List<Meal>();
 
         // foreign key for FitbookUser
         public int FitbookUserId { get; set; }

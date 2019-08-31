@@ -7,12 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 using Fitbook.Interfaces;
 using System.Security.Claims;
 using Fitbook.Models;
+using Fitbook.ViewModel;
 
 namespace Fitbook.Controllers
 {
     public class DayController : Controller
     {
         IDayRepository _dayRepository;
+
         public DayController(IDayRepository dayRepository)
         {
             _dayRepository = dayRepository;
@@ -20,6 +22,7 @@ namespace Fitbook.Controllers
         // GET: Day
         public ActionResult Index()
         {
+            IndexViewModel indexViewModel = new IndexViewModel();
 
             string appUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             DateTime today = DateTime.Today;
@@ -28,13 +31,14 @@ namespace Fitbook.Controllers
             if(_dayRepository.CheckDateExists(appUserId))
             {
 
-                Day currentDailyLog = _dayRepository.DisplayDailyLog(appUserId, today);
+                List<List<Meal>> meals = _dayRepository.GetMeals(appUserId, today);
+                indexViewModel.MealsWithFood = meals;
 
-                return View(currentDailyLog);
+                return View(indexViewModel);
             }
 
             _dayRepository.Create(appUserId);
-            _dayRepository.DisplayDailyLog(appUserId, today);
+            _dayRepository.GetMeals(appUserId, today);
 
             return View();
         }
