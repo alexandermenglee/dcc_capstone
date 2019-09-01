@@ -13,6 +13,8 @@ namespace Fitbook.Models
         [Key]
         public int MealId { get; set; }
 
+        [NotMapped]
+        public List<Food> Foods { get; set; } = new List<Food>();
 
         public List<MealFood> MealFoods { get; set; } = new List<MealFood>();
         public Day Day { get; set; }

@@ -8,7 +8,7 @@ namespace Fitbook.ViewModel
 {
     public class IndexViewModel
     {
-        public List<List<Meal>> MealsWithFood { get; set; }
+        public List<Meal> MealsWithFood { get; set; }
         public Day Day { get; set; }
     }
 }

@@ -31,7 +31,7 @@ namespace Fitbook.Controllers
             if(_dayRepository.CheckDateExists(appUserId))
             {
 
-                List<List<Meal>> meals = _dayRepository.GetMeals(appUserId, today);
+                List<Meal> meals = _dayRepository.GetMeals(appUserId, today);
                 indexViewModel.MealsWithFood = meals;
 
                 return View(indexViewModel);

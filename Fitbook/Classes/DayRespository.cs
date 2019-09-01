@@ -55,14 +55,14 @@ namespace Fitbook.Classes
             }
         }
 
-        public List<List<Meal>> GetMeals(string appUserId, DateTime date)
+        public List<Meal> GetMeals(string appUserId, DateTime date)
         {
             // Query for current user 
             // Query for specified day associated to found user
             // Query for meals where meals.DayId equals specified day
             // For each meal, run a query to retrieve all foods in each meal (MealFood)
 
-            List<List<Meal>> allMealsForDay = new List<List<Meal>>();
+            List<Meal> allMealsForDay = new List<Meal>();
 
             // Gets current user
             int fitbookUserId = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(appUserId)).Single().FitbookUserId;
@@ -74,9 +74,19 @@ namespace Fitbook.Classes
             // Adds the list of type Meal to allMealsForDay list
             for(int i = 0; i < desiredDisplayDay.Meals.Count; i++)
             {
-                IQueryable<Meal> iqueryableMeals = _context.Meals.Include("MealFoods").Where(m => m.MealId == desiredDisplayDay.Meals[i].MealId);
+                Meal mealWithMealFoodsList = _context.Meals.Include("MealFoods").Where(m => m.MealId == desiredDisplayDay.Meals[i].MealId).Single();
 
-                allMealsForDay.Add(iqueryableMeals.ToList());
+                allMealsForDay.Add(mealWithMealFoodsList);
+            }
+
+            // Loop through all MealLists and get food by id 
+            for(int i = 0; i < allMealsForDay.Count; i++)
+            {
+                for(int j = 0; j < allMealsForDay[i].MealFoods.Count; j++)
+                {
+                    Food food = _context.Foods.Where(f => f.FoodId == allMealsForDay[i].MealFoods[j].FoodId).Single();
+                    allMealsForDay[i].Foods.Add(food);
+                }
             }
 
             return allMealsForDay;
