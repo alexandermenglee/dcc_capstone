@@ -32,7 +32,7 @@ namespace Fitbook.Controllers
             {
 
                 List<Meal> meals = _dayRepository.GetMeals(appUserId, today);
-                indexViewModel.MealsWithFood = meals;
+                indexViewModel.Meals = meals;
 
                 return View(indexViewModel);
             }
