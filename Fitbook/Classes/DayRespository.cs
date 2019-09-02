@@ -94,11 +94,20 @@ namespace Fitbook.Classes
             return allMealsForDay;
         }
 
-        public Day GetCurrentDay(string appUserId, DateTime today)
+        public Day GetDay(string appUserId, DateTime date)
         {
             FitbookUser fitbookUser = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(appUserId)).Single();
 
-            return _context.Days.Where(d => d.FitbookUserId == fitbookUser.FitbookUserId && d.Date == today).Single();
+            return _context.Days.Where(d => d.FitbookUserId == fitbookUser.FitbookUserId && d.Date == date).Single();
+        }
+
+        public void AddMealToDay(int dayId)
+        {
+            Day day = _context.Days.Find(dayId);
+            Meal meal = new Meal();
+            day.Meals.Add(meal);
+
+            _context.SaveChanges();
         }
     }
 }
