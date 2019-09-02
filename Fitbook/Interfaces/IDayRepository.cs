@@ -11,5 +11,6 @@ namespace Fitbook.Interfaces
         Task Create(string appUserId);
         bool CheckDateExists(string appUserId);
         List<Meal> GetMeals(string appUserId, DateTime date);
+        Day GetCurrentDay(string appUserId, DateTime today);
     }
 }

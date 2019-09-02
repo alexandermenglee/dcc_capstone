@@ -33,6 +33,9 @@ namespace Fitbook.Controllers
 
                 List<Meal> meals = _dayRepository.GetMeals(appUserId, today);
                 indexViewModel.Meals = meals;
+                // set indexViewModel Day property
+                
+                indexViewModel.Day = _dayRepository.GetCurrentDay(appUserId, today);
 
                 return View(indexViewModel);
             }
@@ -93,6 +96,19 @@ namespace Fitbook.Controllers
             {
                 return View();
             }
+        }
+
+        [HttpPost]
+        public ActionResult AddFood(int mealId)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddMeal(int dayId)
+        {
+            // get day by id
+            return View();
         }
     }
 }

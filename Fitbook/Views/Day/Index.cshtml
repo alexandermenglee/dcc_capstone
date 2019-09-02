@@ -10,14 +10,25 @@
         for (int i = 0; i < Model.Meals.Count; i++)
         {
             <div>
-                <h4>Meal @(i+1)</h4>
-                @for(int j = 0; j < Model.Meals[i].Foods.Count; j++)
+                <h4>Meal @(i + 1)</h4>
+                @for (int j = 0; j < Model.Meals[i].Foods.Count; j++)
                 {
                     <p>@Model.Meals[i].Foods[j].FoodName</p>
+                    <p>@Model.Meals[i].Foods[j].Carbohydrates</p>
+                    <p>@Model.Meals[i].Foods[j].Protein</p>
+                    <p>@Model.Meals[i].Foods[j].Fat</p>
                 }
+            <form asp-action="AddFood" method="post">
+                <input type="hidden" name="mealId" value="@Model.Meals[i].MealId" />
+                <input type="submit" value="Add Food"/>
+            </form>
             </div>
         }
     }
+    <form asp-action="AddMeal" method="post">
+        <input type="hidden" name="dayId" value="@Model.Day.DayId" />
+        <input type="submit" value="Add Meal"
+    </form>
 </div>
 
 

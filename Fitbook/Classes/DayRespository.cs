@@ -22,15 +22,17 @@ namespace Fitbook.Classes
         {
             DateTime currentDay = DateTime.Today;
 
-                Day today = new Day();
-                int fitbookUserId = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(appUserId)).Single().FitbookUserId;
-                var fitbookUsersMacronutrients = _context.FitbookUsersMacronutrients.Where(m => m.FitbookUserId == fitbookUserId).Single();
+            Day today = new Day();
+            Meal initialMeal = new Meal();
+            today.Meals.Add(initialMeal);
+            int fitbookUserId = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(appUserId)).Single().FitbookUserId;
+            var fitbookUsersMacronutrients = _context.FitbookUsersMacronutrients.Where(m => m.FitbookUserId == fitbookUserId).Single();
 
-                today.FitbookUserId = fitbookUserId;
-                today.Date = currentDay;
+            today.FitbookUserId = fitbookUserId;
+            today.Date = currentDay;
 
-                await _context.AddAsync(today);
-                await _context.SaveChangesAsync();
+            await _context.AddAsync(today);
+            await _context.SaveChangesAsync();
         }
 
         public bool CheckDateExists(string appUserId)
@@ -90,6 +92,13 @@ namespace Fitbook.Classes
             }
 
             return allMealsForDay;
+        }
+
+        public Day GetCurrentDay(string appUserId, DateTime today)
+        {
+            FitbookUser fitbookUser = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(appUserId)).Single();
+
+            return _context.Days.Where(d => d.FitbookUserId == fitbookUser.FitbookUserId && d.Date == today).Single();
         }
     }
 }
