@@ -20,7 +20,7 @@ namespace Fitbook.Controllers
             _dayRepository = dayRepository;
         }
         // GET: Day
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             IndexViewModel indexViewModel = new IndexViewModel();
 
@@ -31,7 +31,7 @@ namespace Fitbook.Controllers
             if(_dayRepository.CheckDateExists(appUserId))
             {
 
-                List<Meal> meals = _dayRepository.GetMeals(appUserId, today);
+                List<Meal> meals = await _dayRepository.GetMeals(appUserId, today);
                 indexViewModel.Meals = meals;
                 // set indexViewModel Day property
                 
@@ -101,6 +101,7 @@ namespace Fitbook.Controllers
         [HttpPost]
         public ActionResult AddFood(int mealId)
         {
+
             return View();
         }
 

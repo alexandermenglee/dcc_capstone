@@ -10,7 +10,7 @@ namespace Fitbook.Interfaces
     {
         Task Create(string appUserId);
         bool CheckDateExists(string appUserId);
-        List<Meal> GetMeals(string appUserId, DateTime date);
+        Task<List<Meal>> GetMeals(string appUserId, DateTime date);
         Day GetDay(string appUserId, DateTime date);
         void AddMealToDay(int dayId);
     }

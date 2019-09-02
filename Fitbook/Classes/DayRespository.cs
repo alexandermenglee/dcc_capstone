@@ -57,7 +57,7 @@ namespace Fitbook.Classes
             }
         }
 
-        public List<Meal> GetMeals(string appUserId, DateTime date)
+        public async Task<List<Meal>> GetMeals(string appUserId, DateTime date)
         {
             // Query for current user 
             // Query for specified day associated to found user
@@ -67,10 +67,10 @@ namespace Fitbook.Classes
             List<Meal> allMealsForDay = new List<Meal>();
 
             // Gets current user
-            int fitbookUserId = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(appUserId)).Single().FitbookUserId;
+            FitbookUser fitbookUserId = await _context.FitbookUsers.FirstOrDefaultAsync(f => f.ApplicationUserId.Equals(appUserId));
             // Gets current day by associtaed user and associted day
             // Includes all meals for that day
-            Day desiredDisplayDay = _context.Days.Include("Meals").Where(d => d.Date == date && d.FitbookUserId == fitbookUserId).Single();
+            Day desiredDisplayDay = _context.Days.Include("Meals").Where(d => d.Date == date && d.FitbookUserId == fitbookUserId.FitbookUserId).Single();
             
             // Takes the MealId of each meal in desiredDisplayDay.Meals and queries for associated MealFoods list
             // Adds the list of type Meal to allMealsForDay list
