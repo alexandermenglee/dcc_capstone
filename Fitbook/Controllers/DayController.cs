@@ -40,8 +40,8 @@ namespace Fitbook.Controllers
                 return View(indexViewModel);
             }
 
-            _dayRepository.Create(appUserId);
-            _dayRepository.GetMeals(appUserId, today);
+            await _dayRepository.Create(appUserId);
+            await _dayRepository.GetMeals(appUserId, today);
 
             return View();
         }

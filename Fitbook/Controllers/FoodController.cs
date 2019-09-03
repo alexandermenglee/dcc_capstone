@@ -67,7 +67,7 @@ namespace Fitbook.Controllers
 
         public async Task SubmitQuery(string query)
         {
-            await SearchNutritionXiAPI(query);
+           List<Food> searchResults = await SearchNutritionXiAPI(query);
         }
 
         /*[HttpPost]
@@ -77,7 +77,7 @@ namespace Fitbook.Controllers
         }*/
 
         // Method to make API call to NutritionXi API
-        private async Task SearchNutritionXiAPI(string food)
+        private async Task<List<Food>> SearchNutritionXiAPI(string food)
         {
             _client.DefaultRequestHeaders.Add("x-app-id", API_Keys.NutrionixAPIKey.APPLICATION_ID);
             _client.DefaultRequestHeaders.Add("x-app-key", API_Keys.NutrionixAPIKey.API_KEY);
@@ -85,17 +85,26 @@ namespace Fitbook.Controllers
             var results = await _client.GetStringAsync($"https://trackapi.nutritionix.com/v2/search/instant?query={food}");
             var deserializedResults = JsonConvert.DeserializeObject<JObject>(results);
             var commonFoodList = deserializedResults["common"].ToList();
-            List<Food> commonFoods = new List<Food>();
+            var brandedFoodList = deserializedResults["branded"].ToList();
+            List<Food> searchResults = new List<Food>();
 
-            for(int i = 0; i < commonFoodList.Count; i++)
+            for (int i = 0; i < commonFoodList.Count; i++)
             {
                 Food newFood = new Food();
                 string foodName = (string)commonFoodList[i]["food_name"];
                 newFood.FoodName = foodName;
-                commonFoods.Add(newFood);
+                searchResults.Add(newFood);
             }
 
-            var brandedFoodList = deserializedResults["branded"];
+            for(int i = 0; i < brandedFoodList.Count; i++)
+            {
+                Food newFood = new Food();
+                string foodName = (string)brandedFoodList[i]["food_name"];
+                newFood.FoodName = foodName;
+                searchResults.Add(newFood);
+            }
+
+            return searchResults;
         }
     }
 }
