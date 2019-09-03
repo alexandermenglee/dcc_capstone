@@ -8,12 +8,14 @@ using Fitbook.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Fitbook.ViewModel;
+using System.Net.Http;
 
 namespace Fitbook.Classes
 {
     public class DayRespository : IDayRepository
     {
         ApplicationDbContext _context;
+
         public DayRespository(ApplicationDbContext context)
         {
             _context = context;
