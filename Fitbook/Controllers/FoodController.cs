@@ -10,6 +10,7 @@ using Fitbook.Models;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using Fitbook.API_Keys;
+using Newtonsoft.Json.Linq;
 
 namespace Fitbook.Controllers
 {
@@ -81,9 +82,20 @@ namespace Fitbook.Controllers
             _client.DefaultRequestHeaders.Add("x-app-id", API_Keys.NutrionixAPIKey.APPLICATION_ID);
             _client.DefaultRequestHeaders.Add("x-app-key", API_Keys.NutrionixAPIKey.API_KEY);
 
-            string stringResult = await _client.GetStringAsync($"https://trackapi.nutritionix.com/v2/search/instant?query={food}");
+            var results = await _client.GetStringAsync($"https://trackapi.nutritionix.com/v2/search/instant?query={food}");
+            var deserializedResults = JsonConvert.DeserializeObject<JObject>(results);
+            var commonFoodList = deserializedResults["common"].ToList();
+            List<Food> commonFoods = new List<Food>();
 
-            var data = JsonConvert.DeserializeObject<Food>(stringResult);
+            for(int i = 0; i < commonFoodList.Count; i++)
+            {
+                Food newFood = new Food();
+                string foodName = (string)commonFoodList[i]["food_name"];
+                newFood.FoodName = foodName;
+                commonFoods.Add(newFood);
+            }
+
+            var brandedFoodList = deserializedResults["branded"];
         }
     }
 }
