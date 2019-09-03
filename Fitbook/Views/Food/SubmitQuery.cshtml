@@ -7,11 +7,14 @@
 <h1>Results</h1>
 
 <div>
-    @{ 
-        for(int i = 0; i < Model.queryResults.Count; i++)
-        {
-            <p>@Model.queryResults[i].FoodName</p>
-        }
+    @for(int i = 0; i < Model.queryResults.Count; i++)
+    {
+    <div>
+        <h4>@Model.queryResults[i].FoodName</h4>
+        <p>Carbohydrates: @Model.queryResults[i].Carbohydrates</p>
+        <p>Protein: @Model.queryResults[i].Protein</p>
+        <p>Fat: @Model.queryResults[i].Fat</p>
+    </div>
     }
 </div>
 

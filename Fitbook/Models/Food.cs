@@ -16,6 +16,7 @@ namespace Fitbook.Models
         public int Fat { get; set; }
         public int Calories { get; set; }
         public int Amount {get; set;}
+        public string NIX_ID { get; set; }
 
         public List<MealFood> MealFoods { get; set; }
     }

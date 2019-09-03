@@ -77,34 +77,51 @@ namespace Fitbook.Controllers
         }
 
         // Method to make API call to NutritionXi API
-        private async Task<List<Food>> SearchNutritionXiAPI(string food)
+        private async Task<List<Food>> SearchNutritionXiAPI(String query)
         {
             _client.DefaultRequestHeaders.Add("x-app-id", API_Keys.NutrionixAPIKey.APPLICATION_ID);
             _client.DefaultRequestHeaders.Add("x-app-key", API_Keys.NutrionixAPIKey.API_KEY);
 
-            var results = await _client.GetStringAsync($"https://trackapi.nutritionix.com/v2/search/instant?query={food}");
+            var results = await _client.GetStringAsync($"https://trackapi.nutritionix.com/v2/search/instant?query={query}");
             var deserializedResults = JsonConvert.DeserializeObject<JObject>(results);
-            var commonFoodList = deserializedResults["common"].ToList();
             var brandedFoodList = deserializedResults["branded"].ToList();
             List<Food> searchResults = new List<Food>();
 
-            for (int i = 0; i < commonFoodList.Count; i++)
-            {
-                Food newFood = new Food();
-                string foodName = (string)commonFoodList[i]["food_name"];
-                newFood.FoodName = foodName;
-                searchResults.Add(newFood);
-            }
-
             for(int i = 0; i < brandedFoodList.Count; i++)
             {
-                Food newFood = new Food();
-                string foodName = (string)brandedFoodList[i]["food_name"];
-                newFood.FoodName = foodName;
-                searchResults.Add(newFood);
+                Food food = new Food();
+
+                food.FoodName = (string)brandedFoodList[i]["food_name"];
+                food.NIX_ID = (string)brandedFoodList[i]["nix_item_id"];
+                JObject deserializedFood = await GetNutrition(food.NIX_ID);
+                SetFoodValues(deserializedFood, food);
+
+                searchResults.Add(food);
             }
 
             return searchResults;
+        }
+
+        private Food SetFoodValues(JObject deserializedFood, Food food)
+        {
+            food.Carbohydrates = (int)deserializedFood["foods"][0]["nf_total_carbohydrate"];
+            food.Protein = (int)deserializedFood["foods"][0]["nf_protein"];
+            food.Fat = (int)deserializedFood["foods"][0]["nf_total_fat"];
+            food.Calories = (int)deserializedFood["foods"][0]["nf_calories"];
+
+            return food;
+        }
+
+        private async Task<JObject> GetNutrition(string nixId)
+        {
+            string endpoint = $"https://trackapi.nutritionix.com/v2/search/item?nix_item_id={nixId}";
+
+            /*_client.DefaultRequestHeaders.Add("x-app-id", API_Keys.NutrionixAPIKey.APPLICATION_ID);
+            _client.DefaultRequestHeaders.Add("x-app-key", API_Keys.NutrionixAPIKey.API_KEY);*/
+
+            var results = await _client.GetStringAsync(endpoint);
+
+            return JsonConvert.DeserializeObject<JObject>(results);
         }
     }
 }
