@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using Fitbook.API_Keys;
 using Newtonsoft.Json.Linq;
+using Fitbook.ViewModel;
 
 namespace Fitbook.Controllers
 {
@@ -65,16 +66,15 @@ namespace Fitbook.Controllers
             return View();
         }
 
-        public async Task SubmitQuery(string query)
+        public async Task<IActionResult> SubmitQuery(string query)
         {
-           List<Food> searchResults = await SearchNutritionXiAPI(query);
-        }
+            FoodQueryResultsViewModel foodQueryResults = new FoodQueryResultsViewModel();
+            List<Food> searchResults = await SearchNutritionXiAPI(query);
 
-        /*[HttpPost]
-        public async Task SearchFood(int mealId)
-        {
-            await SearchNutritionXiAPI();
-        }*/
+            foodQueryResults.queryResults = searchResults;
+
+            return View(foodQueryResults);
+        }
 
         // Method to make API call to NutritionXi API
         private async Task<List<Food>> SearchNutritionXiAPI(string food)
