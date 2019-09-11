@@ -32,51 +32,80 @@ namespace Fitbook.Controllers
             return View();
         }
 
-        // GET: Food/Details/5
-        public ActionResult Details(int id)
+        public ActionResult SearchFood(int mealId)
         {
-            return View();
+            return View(mealId);
         }
 
-        // GET: Food/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Food/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        public ActionResult SearchFood()
-        {
-            return View();
-        }
-
-        public async Task<IActionResult> SubmitQuery(string query)
+        // Creates a ViewModel that contains a List<Food> member property
+        // Calls the SearchNutritionXiAPI method to get a list of Food objects
+        // Sets the ViewModels List<Food> to the list returned from the API call
+        // Returns the view with the ViewModel passed in
+        public async Task<IActionResult> SubmitQuery(string query, int mealId)
         {
             FoodQueryResultsViewModel foodQueryResults = new FoodQueryResultsViewModel();
             List<Food> searchResults = await SearchNutritionXiAPI(query);
 
             foodQueryResults.queryResults = searchResults;
+            foodQueryResults.MealId = mealId;
 
             return View(foodQueryResults);
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> AddFoodToMeal(IFormCollection form)
+        {
+            string foodName = form["foodName"];
+            int proteinCount = Int32.Parse(form["protein"]);
+
+            Food food = new Food()
+            {
+                FoodName = form["foodName"],
+                Carbohydrates = Int32.Parse(form["carbohydrates"]),
+                Protein = Int32.Parse(form["protein"]),
+                Fat = Int32.Parse(form["fat"]),
+                Calories = Int32.Parse(form["calories"])
+            };
+
+            // check if food exists, if not add it to the database
+            CheckFoodInDB(food);
+           
+            var meal = await _context.Meals.FindAsync(Int32.Parse(form["mealId"]));
+
+            Food newFood = _context.Foods.Where(f => f == food).Single();
+            MealFood mealFood = new MealFood()
+            {
+                Meal = meal,
+                Food = newFood
+            };
+
+            meal.MealFoods.Add(mealFood);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Day");
+        }
+
+        private bool CheckFoodInDB(Food food)
+        {
+            List<Food> foodInDB =  _context.Foods.Where(f => f == food).ToList();
+            
+            if(foodInDB.Count > 0)
+            {
+                return true;
+            }
+
+            _context.Foods.Add(food);
+            _context.SaveChanges();
+
+            return false;
+        }
+
         // Method to make API call to NutritionXi API
+        // Gets all foods from NutrionXi API
+        // Creates a Food object from each result
+        // Returns a List<Food> containing all the Food objects created from the API call
         private async Task<List<Food>> SearchNutritionXiAPI(String query)
         {
             _client.DefaultRequestHeaders.Add("x-app-id", API_Keys.NutrionixAPIKey.APPLICATION_ID);
@@ -87,7 +116,10 @@ namespace Fitbook.Controllers
             var brandedFoodList = deserializedResults["branded"].ToList();
             List<Food> searchResults = new List<Food>();
 
-            for(int i = 0; i < brandedFoodList.Count; i++)
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            // CHANGE THIS BACK TO brandedFoodList.Count AFTER TESTING
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            for (int i = 0; i < 1; i++)
             {
                 Food food = new Food();
 

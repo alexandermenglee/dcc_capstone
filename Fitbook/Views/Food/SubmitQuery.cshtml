@@ -10,10 +10,27 @@
     @for(int i = 0; i < Model.queryResults.Count; i++)
     {
     <div>
-        <h4>@Model.queryResults[i].FoodName</h4>
-        <p>Carbohydrates: @Model.queryResults[i].Carbohydrates</p>
-        <p>Protein: @Model.queryResults[i].Protein</p>
-        <p>Fat: @Model.queryResults[i].Fat</p>
+        <form asp-action="AddFoodToMeal" method="post">
+            <input type="hidden" name="mealId" value="@Model.MealId" />
+            <input type="hidden" name="foodName" value="@Model.queryResults[i].FoodName" />
+            <input type="hidden" name="carbohydrates" value="@Model.queryResults[i].Carbohydrates" />
+            <input type="hidden" name="protein" value="@Model.queryResults[i].Protein" />
+            <input type="hidden" name="fat" value="@Model.queryResults[i].Fat" />
+            <input type="hidden" name="calories" value="@Model.queryResults[i].Calories" />
+
+            <h4 name="foodName">@Model.queryResults[i].FoodName</h4>
+            <p name="carbohydrates">Carbohydrates: @Model.queryResults[i].Carbohydrates</p>
+            <p name="protein">Protein: @Model.queryResults[i].Protein</p>
+            <p name="fat">Fat: @Model.queryResults[i].Fat</p>
+            <p name="calories">@Model.queryResults[i].Calories</p>
+
+            @*<h4>@Html.DisplayFor(m => m.queryResults[i].FoodName)</h4>
+        <p>Carbohydrates: @Html.DisplayFor(m => m.queryResults[i].Carbohydrates)</p>
+        <p>Protein: @Html.DisplayFor(m => m.queryResults[i].Protein)</p>
+        <p>Fats: @Html.DisplayFor(m => m.queryResults[i].Fat)</p>
+        <p>Calories Per Serving: @Html.DisplayFor(m => m.queryResults[i].Calories)</p>*@
+            <input type="submit" value="Add Food" />
+        </form> 
     </div>
     }
 </div>

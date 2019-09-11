@@ -1,4 +1,6 @@
-﻿
+﻿@model Int32
+
+
 @{
     ViewData["Title"] = "View";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,6 +9,7 @@
 <h1>Search Food</h1>
 <form asp-action="SubmitQuery" method="post">
     <input type="text" name="query" placeholder="chicken wings, tacos, rice, etc..." />
+    <input type="hidden" name="mealId" value="@Model" />
     <input type="submit" value="Search"/>
 </form>
 
