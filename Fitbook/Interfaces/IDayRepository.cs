@@ -13,6 +13,7 @@ namespace Fitbook.Interfaces
         Task<List<Meal>> GetMeals(string appUserId, DateTime date);
         Day GetDay(string appUserId, DateTime date);
         void AddMealToDay(int dayId);
+        Dictionary<string, int> GetNutrition(List<Meal> meals);
     }
 
 }

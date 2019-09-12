@@ -21,9 +21,10 @@ namespace Fitbook.Controllers
         }
         // GET: Day
         public async Task<ActionResult> Index()
-        {
+            {
             IndexViewModel indexViewModel = new IndexViewModel();
             List<Meal> meals;
+            Dictionary<string, int> nutrition; 
 
             string appUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             DateTime today = DateTime.Today;
@@ -37,6 +38,12 @@ namespace Fitbook.Controllers
                 // set indexViewModel Day property
                 
                 indexViewModel.Day = _dayRepository.GetDay(appUserId, today);
+                // set total nutrition for that day
+                nutrition = _dayRepository.GetNutrition(meals);
+                indexViewModel.Day.Carbohydates = nutrition["carbohydrates"];
+                indexViewModel.Day.Fat = nutrition["protein"];
+                indexViewModel.Day.Protein = nutrition["fat"];
+                indexViewModel.Day.Calories= nutrition["calories"];
 
                 return View(indexViewModel);
             }

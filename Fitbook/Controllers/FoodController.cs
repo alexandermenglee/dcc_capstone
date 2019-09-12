@@ -65,7 +65,8 @@ namespace Fitbook.Controllers
                 Carbohydrates = Int32.Parse(form["carbohydrates"]),
                 Protein = Int32.Parse(form["protein"]),
                 Fat = Int32.Parse(form["fat"]),
-                Calories = Int32.Parse(form["calories"])
+                Calories = Int32.Parse(form["calories"]),
+                NIX_ID = form["nixId"]
             };
 
             // check if food exists, if not add it to the database
@@ -73,7 +74,7 @@ namespace Fitbook.Controllers
            
             var meal = await _context.Meals.FindAsync(Int32.Parse(form["mealId"]));
 
-            Food newFood = _context.Foods.Where(f => f == food).Single();
+            Food newFood = _context.Foods.Where(f => f.NIX_ID.Equals(food.NIX_ID)).Single();
             MealFood mealFood = new MealFood()
             {
                 Meal = meal,
@@ -89,7 +90,7 @@ namespace Fitbook.Controllers
 
         private bool CheckFoodInDB(Food food)
         {
-            List<Food> foodInDB =  _context.Foods.Where(f => f == food).ToList();
+            List<Food> foodInDB =  _context.Foods.Where(f => f.NIX_ID.Equals(food.NIX_ID)).ToList();
             
             if(foodInDB.Count > 0)
             {

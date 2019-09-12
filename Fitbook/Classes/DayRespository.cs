@@ -70,7 +70,8 @@ namespace Fitbook.Classes
 
             // Gets current user
             FitbookUser fitbookUserId = await _context.FitbookUsers.FirstOrDefaultAsync(f => f.ApplicationUserId.Equals(appUserId));
-            // Gets current day by associtaed user and associted day
+
+            // Gets current day by associtaed user and associated day
             // Includes all meals for that day
             Day desiredDisplayDay = _context.Days.Include("Meals").Where(d => d.Date == date && d.FitbookUserId == fitbookUserId.FitbookUserId).Single();
             
@@ -94,6 +95,30 @@ namespace Fitbook.Classes
             }
 
             return allMealsForDay;
+        }
+
+        public Dictionary<string, int> GetNutrition(List<Meal> meals)
+        {
+            Dictionary<string, int> nutrition = new Dictionary<string, int>();
+            nutrition.Add("carbohydrates", 0);
+            nutrition.Add("protein", 0);
+            nutrition.Add("fat", 0);
+            nutrition.Add("calories", 0);
+
+            for (int i = 0; i < meals.Count; i++)
+            {
+                List<Food> currentFoodList = meals[i].Foods;
+                for (int j = 0; j < currentFoodList.Count; j++)
+                {
+                    // loop through each food to calculate nutrition
+                    nutrition["carbohydrates"] += currentFoodList[j].Carbohydrates;
+                    nutrition["protein"] += currentFoodList[j].Protein;
+                    nutrition["fat"] += currentFoodList[j].Fat;
+                    nutrition["calories"] += currentFoodList[j].Calories;
+                }
+            }
+
+            return nutrition;
         }
 
         public Day GetDay(string appUserId, DateTime date)

@@ -33,6 +33,15 @@
         <input type="hidden" name="dayId" value="@Model.Day.DayId" />
         <input type="submit" value="Add Meal" />
     </form>
+
+    <div>
+        @{
+            <div>Total Carbohydrates:  @Model.Day.Carbohydates</div>
+            <div>Total Protein:  @Model.Day.Protein</div>
+            <div>Total Fat: @Model.Day.Fat</div>
+            <div>Total Calories: @Model.Day.Calories</div>
+        }
+    </div>
 </div>
 
 
