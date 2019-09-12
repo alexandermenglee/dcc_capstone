@@ -14,6 +14,8 @@ namespace Fitbook.Interfaces
         Day GetDay(string appUserId, DateTime date);
         void AddMealToDay(int dayId);
         Dictionary<string, int> GetNutrition(List<Meal> meals);
+        Task<FitbookUser> GetFBUser(string appUserId);
+        Task<FitbookUsersMacronutrients> GetMacros(FitbookUser fitbookUser);
     }
 
 }

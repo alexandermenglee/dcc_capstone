@@ -120,7 +120,7 @@ namespace Fitbook.Controllers
             // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             // CHANGE THIS BACK TO brandedFoodList.Count AFTER TESTING
             // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Food food = new Food();
 

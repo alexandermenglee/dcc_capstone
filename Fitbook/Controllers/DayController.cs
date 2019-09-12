@@ -22,6 +22,8 @@ namespace Fitbook.Controllers
         // GET: Day
         public async Task<ActionResult> Index()
             {
+            FitbookUser fitbookUser;
+            FitbookUsersMacronutrients fbUsersNutrients;
             IndexViewModel indexViewModel = new IndexViewModel();
             List<Meal> meals;
             Dictionary<string, int> nutrition; 
@@ -30,28 +32,25 @@ namespace Fitbook.Controllers
             DateTime today = DateTime.Today;
 
             // check if current user has a day already
-            if(_dayRepository.CheckDateExists(appUserId))
+            if(!_dayRepository.CheckDateExists(appUserId))
             {
-
-                meals = await _dayRepository.GetMeals(appUserId, today);
-                indexViewModel.Meals = meals;
-                // set indexViewModel Day property
-                
-                indexViewModel.Day = _dayRepository.GetDay(appUserId, today);
-                // set total nutrition for that day
-                nutrition = _dayRepository.GetNutrition(meals);
-                indexViewModel.Day.Carbohydates = nutrition["carbohydrates"];
-                indexViewModel.Day.Fat = nutrition["protein"];
-                indexViewModel.Day.Protein = nutrition["fat"];
-                indexViewModel.Day.Calories= nutrition["calories"];
-
-                return View(indexViewModel);
+                await _dayRepository.Create(appUserId);
             }
 
-            await _dayRepository.Create(appUserId);
+            meals = await _dayRepository.GetMeals(appUserId, today);
+            fitbookUser = await _dayRepository.GetFBUser(appUserId);
+            fbUsersNutrients = await _dayRepository.GetMacros(fitbookUser);
 
+            indexViewModel.Meals = meals;
+            indexViewModel.fitbookUser = fitbookUser;
+            indexViewModel.fitbookUsersMacronutrients = fbUsersNutrients;
             indexViewModel.Day = _dayRepository.GetDay(appUserId, today);
-            indexViewModel.Meals = await _dayRepository.GetMeals(appUserId, today);
+
+            nutrition = _dayRepository.GetNutrition(meals);
+            indexViewModel.Day.Carbohydates = nutrition["carbohydrates"];
+            indexViewModel.Day.Fat = nutrition["protein"];
+            indexViewModel.Day.Protein = nutrition["fat"];
+            indexViewModel.Day.Calories = nutrition["calories"];
 
             return View(indexViewModel);
         }

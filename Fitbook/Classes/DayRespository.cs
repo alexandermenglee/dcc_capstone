@@ -136,5 +136,15 @@ namespace Fitbook.Classes
 
             _context.SaveChanges();
         }
+
+        public async Task<FitbookUser> GetFBUser(string appUserId)
+        {
+            return await _context.FitbookUsers.FirstOrDefaultAsync(f => f.ApplicationUserId.Equals(appUserId));
+        }
+
+        public async Task<FitbookUsersMacronutrients> GetMacros(FitbookUser fitbookUser)
+        {
+            return await _context.FitbookUsersMacronutrients.FirstOrDefaultAsync(f => f.FitbookUserId == fitbookUser.FitbookUserId);
+        }
     }
 }
