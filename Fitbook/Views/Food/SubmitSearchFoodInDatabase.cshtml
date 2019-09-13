@@ -10,7 +10,7 @@
         @if (Model.Foods.Count == 0)
         {
             <p>Oops! Looks like that isn't in our database. Sorry!</p>
-            <a asp-action="" SearchFoodInDatabase>Search Again</a>
+            <a asp-action="SearchFoodInDatabase" asp-route-dayId="@Model.DayId">Search Again</a>
         }
 
         foreach (Food food in Model.Foods)
