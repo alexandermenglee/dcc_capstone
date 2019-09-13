@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewData["Title"] = "SearchFoodInDatabase";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Search</h1>
+<form asp-action="SubmitSearchFoodInDatabase" method="post">
+    <input type="text" name="query" placeholder="chicken, tacos, rice..." maxlength="32"/>
+    <input type="submit" value="Search" />
+</form>
+

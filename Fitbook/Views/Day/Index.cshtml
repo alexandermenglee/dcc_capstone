@@ -5,6 +5,7 @@
 }
 
 <h1>Index</h1>
+<a asp-controller="Food" asp-action="SearchFoodInDatabase">Compare Food With Macros</a>
 @* Displays food *@
 <div>
     @{
@@ -24,8 +25,9 @@
                 {
                     <input type="hidden" name="mealId" value="@Model.Meals[i].MealId" />
                     <input type="submit" value="Add Food" />
+                    <br />
+                    <hr />
                 }
-
             </div>
         }
     }
@@ -33,7 +35,7 @@
         <input type="hidden" name="dayId" value="@Model.Day.DayId" />
         <input type="submit" value="Add Meal" />
     </form>
-
+    <hr />
     <div>
         @{
             <h5>Daily Caloric Intake</h5>

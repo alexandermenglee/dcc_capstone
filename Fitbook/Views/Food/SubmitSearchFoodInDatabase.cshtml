@@ -1,0 +1,32 @@
+﻿@model List<Food>
+@{
+    ViewData["Title"] = "SubmitSearchFoodInDatabase";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>SubmitSearchFoodInDatabase</h1>
+<div>
+    @{
+        @if (Model.Count == 0)
+        {
+            <p>Oops! Looks like that isn't in our database. Sorry!</p>
+            <a asp-action="" SearchFoodInDatabase>Search Again</a>
+        }
+
+        foreach (Food food in Model)
+        {
+            <div>
+                <form asp-action="CompareAgainstMacros">
+                    <p>@food.FoodName</p>
+                    <p>Carbohydrates: @food.Carbohydrates</p>
+                    <p>Protein: @food.Protein</p>
+                    <p>Fat: @food.Fat</p>
+                    <p>Calories: @food.Calories</p>
+                    <input type="hidden" name="nixId" value="@food.NIX_ID" />
+                    <input type="submit" value="Compare" />
+                </form>
+                
+            </div>
+        }
+    }
+</div>

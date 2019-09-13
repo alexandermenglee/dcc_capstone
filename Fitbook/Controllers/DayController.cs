@@ -8,9 +8,11 @@ using Fitbook.Interfaces;
 using System.Security.Claims;
 using Fitbook.Models;
 using Fitbook.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Fitbook.Controllers
 {
+    [Authorize]
     public class DayController : Controller
     {
         IDayRepository _dayRepository;
@@ -32,7 +34,8 @@ namespace Fitbook.Controllers
             DateTime today = DateTime.Today;
 
             // check if current user has a day already
-            if(!_dayRepository.CheckDateExists(appUserId))
+
+            if (!_dayRepository.CheckDateExists(appUserId))
             {
                 await _dayRepository.Create(appUserId);
             }
@@ -53,74 +56,6 @@ namespace Fitbook.Controllers
             indexViewModel.Day.Calories = nutrition["calories"];
 
             return View(indexViewModel);
-        }
-
-        // GET: Day/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: Day/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Day/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Day/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Day/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        [HttpPost]
-        public ActionResult AddFood(int mealId)
-        {
-
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult AddMeal(int dayId)
-        {
-            // get day by id
-            _dayRepository.AddMealToDay(dayId);
-
-            return RedirectToAction("Index");
         }
     }
 }

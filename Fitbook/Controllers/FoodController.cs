@@ -156,5 +156,25 @@ namespace Fitbook.Controllers
 
             return JsonConvert.DeserializeObject<JObject>(results);
         }
+
+        public IActionResult SearchFoodInDatabase()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult SubmitSearchFoodInDatabase(string query)
+        {
+            List<Food> queryResults = _context.Foods.Where(f => f.FoodName.Contains(query)).ToList();
+
+            return View(queryResults);
+        }
+
+        [HttpPost]
+        public IActionResult CompareAgainstMacros(string nixId)
+        {
+            Food food = _context.Foods.Where(f => f.NIX_ID.Equals(nixId)).Single();
+            return View();
+        }
     }
 }
