@@ -13,6 +13,7 @@ using Fitbook.API_Keys;
 using Newtonsoft.Json.Linq;
 using Fitbook.ViewModel;
 using System.Security.Claims;
+using Fitbook.Classes;
 
 namespace Fitbook.Controllers
 {
@@ -179,13 +180,22 @@ namespace Fitbook.Controllers
         [HttpPost]
         public IActionResult CompareAgainstMacros(string nixId, int dayId)
         {
+            CompareAgainstMacrosViewModel camViewModel = new CompareAgainstMacrosViewModel();
             Food food = _context.Foods.Where(f => f.NIX_ID.Equals(nixId)).Single();
             string appUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             FitbookUser fitbookUser = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(appUserId)).Single();
             FitbookUsersMacronutrients fbUsersNutrients = _context.FitbookUsersMacronutrients.Where(n => n.FitbookUserId == fitbookUser.FitbookUserId).Single();
-            
+            Day day = _context.Days.Find(dayId);
 
-            return View();
+            double remaingCarbs = fbUsersNutrients.Carbohydrates - day.Carbohydates;
+            double remaingProtein = fbUsersNutrients.Protein - day.Protein;
+            double remainingFat = fbUsersNutrients.Fat - day.Fat;
+            double remaingCalories = fbUsersNutrients.DailyCalories - day.Calories;
+
+            camViewModel.Serving = Math.Round(remaingCalories / food.Calories, 2, MidpointRounding.AwayFromZero);
+            camViewModel.Food = food;
+
+            return View(camViewModel);
         }
     }
 }
