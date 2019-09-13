@@ -12,6 +12,7 @@ using System.Net.Http.Headers;
 using Fitbook.API_Keys;
 using Newtonsoft.Json.Linq;
 using Fitbook.ViewModel;
+using System.Security.Claims;
 
 namespace Fitbook.Controllers
 {
@@ -157,23 +158,33 @@ namespace Fitbook.Controllers
             return JsonConvert.DeserializeObject<JObject>(results);
         }
 
-        public IActionResult SearchFoodInDatabase()
+        public IActionResult SearchFoodInDatabase(int dayId)
         {
-            return View();
+            return View(dayId);
         }
 
         [HttpPost]
-        public IActionResult SubmitSearchFoodInDatabase(string query)
+        public IActionResult SubmitSearchFoodInDatabase(string query, int dayId)
         {
+            // create a new viewmodel
+            CompareFoodViewModel cfViewModel = new CompareFoodViewModel();
             List<Food> queryResults = _context.Foods.Where(f => f.FoodName.Contains(query)).ToList();
 
-            return View(queryResults);
+            cfViewModel.DayId = dayId;
+            cfViewModel.Foods = queryResults;
+
+            return View(cfViewModel);
         }
 
         [HttpPost]
-        public IActionResult CompareAgainstMacros(string nixId)
+        public IActionResult CompareAgainstMacros(string nixId, int dayId)
         {
             Food food = _context.Foods.Where(f => f.NIX_ID.Equals(nixId)).Single();
+            string appUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            FitbookUser fitbookUser = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(appUserId)).Single();
+            FitbookUsersMacronutrients fbUsersNutrients = _context.FitbookUsersMacronutrients.Where(n => n.FitbookUserId == fitbookUser.FitbookUserId).Single();
+            
+
             return View();
         }
     }

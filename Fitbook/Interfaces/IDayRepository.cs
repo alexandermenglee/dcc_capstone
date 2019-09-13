@@ -16,6 +16,7 @@ namespace Fitbook.Interfaces
         Dictionary<string, int> GetNutrition(List<Meal> meals);
         Task<FitbookUser> GetFBUser(string appUserId);
         Task<FitbookUsersMacronutrients> GetMacros(FitbookUser fitbookUser);
+        Task SaveDayNutrition(Day day, Dictionary<string, int> nutrition);
     }
 
 }

@@ -55,6 +55,8 @@ namespace Fitbook.Controllers
             indexViewModel.Day.Protein = nutrition["fat"];
             indexViewModel.Day.Calories = nutrition["calories"];
 
+            await _dayRepository.SaveDayNutrition(indexViewModel.Day, nutrition);
+
             return View(indexViewModel);
         }
     }

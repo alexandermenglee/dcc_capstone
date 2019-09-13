@@ -5,7 +5,8 @@
 }
 
 <h1>Index</h1>
-<a asp-controller="Food" asp-action="SearchFoodInDatabase">Compare Food With Macros</a>
+<a asp-controller="Food" asp-action="SearchFoodInDatabase" asp-route-dayId="@Model.Day.DayId">Compare Food With Macros</a>
+<form></form>
 @* Displays food *@
 <div>
     @{

@@ -146,5 +146,17 @@ namespace Fitbook.Classes
         {
             return await _context.FitbookUsersMacronutrients.FirstOrDefaultAsync(f => f.FitbookUserId == fitbookUser.FitbookUserId);
         }
+
+        public async Task SaveDayNutrition(Day day, Dictionary<string, int> nutrition)
+        {
+            Day foundDay = await _context.Days.FindAsync(day.DayId);
+
+            foundDay.Carbohydates = nutrition["carbohydrates"];
+            foundDay.Protein = nutrition["protein"];
+            foundDay.Fat = nutrition["fat"];
+            foundDay.Calories = nutrition["calories"];
+
+            await _context.SaveChangesAsync();
+        }
     }
 }
