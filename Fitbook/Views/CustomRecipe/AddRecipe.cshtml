@@ -1,0 +1,11 @@
+﻿@model  Fitbook.Models.CustomRecipe
+
+    <form asp-action="Create" method="post">
+        <input type="text" asp-for="@Model.CustomRecipeName" placeholder="Recipe Name" />
+        <input type="text" asp-for="@Model.Description" placeholder="Recipe Description" />
+        <input type="text" asp-for="@Model.Carbohydrates" placeholder="Carbohydrates Per Serving" />
+        <input type="text" asp-for="@Model.Protein" placeholder="Protein Per Serving" />
+        <input type="text" asp-for="@Model.Fat" placeholder="Fat Per Serving" />
+        <input type="text" asp-for="@Model.Calories" placeholder="Calories Per Serving" />
+        <input type="submit" value="Create" />
+    </form>
