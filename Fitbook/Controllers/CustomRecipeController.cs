@@ -60,5 +60,13 @@ namespace Fitbook.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Display(int id)
+        {
+            CustomRecipe customRecipe = await _context.CustomRecipes.FindAsync(id);
+
+            return View(customRecipe);
+        }
     }
 }
