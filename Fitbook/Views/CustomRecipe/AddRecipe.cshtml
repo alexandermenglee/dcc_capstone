@@ -1,23 +1,28 @@
-﻿@model  Fitbook.Models.CustomRecipe
+﻿@model  Fitbook.ViewModel.AddRecipeViewModel
 
     <form asp-action="Create" method="post">
         <div>
-            <input type="text" asp-for="@Model.CustomRecipeName" class="form-control" size="30" placeholder="Recipe Name" />
+            <input type="text" asp-for="@Model.CustomRecipe.CustomRecipeName" class="form-control" size="30" placeholder="Recipe Name" />
         </div>
         <div>
-            <textarea asp-for="@Model.Description" rows="10" cols="50" class="form-control"></textarea>
+            <textarea asp-for="@Model.CustomRecipe.Description" rows="10" cols="50" class="form-control"></textarea>
         </div>
         <div>
-            <input type="text" asp-for="@Model.Carbohydrates" class="form-control" size="30" placeholder="Carbohydrates Per Serving" />
+            <input type="text" asp-for="@Model.CustomRecipe.Carbohydrates" class="form-control" size="30" placeholder="Carbohydrates Per Serving" />
         </div>
         <div>
-            <input type="text" asp-for="@Model.Protein" class="form-control" size="30" placeholder="Protein Per Serving" />
+            <input type="text" asp-for="@Model.CustomRecipe.Protein" class="form-control" size="30" placeholder="Protein Per Serving" />
         </div>
         <div>
-            <input type="text" asp-for="@Model.Fat" class="form-control" size="30" placeholder="Fat Per Serving" />
+            <input type="text" asp-for="@Model.CustomRecipe.Fat" class="form-control" size="30" placeholder="Fat Per Serving" />
         </div>
         <div>
-            <input type="text" asp-for="@Model.Calories" class="form-control" size="30" placeholder="Calories Per Serving" />
+            <input type="text" asp-for="@Model.CustomRecipe.Calories" class="form-control" size="30" placeholder="Calories Per Serving" />
+        </div>
+        <div>
+            <select asp-for="@Model.CustomRecipe.CategoryId" asp-items="@(new SelectList(Model.Categories, "CategoryId", "CategoryName"))">
+                <option>Select Category</option>
+            </select>
         </div>
         <div>
             <input type="submit" value="Create" class="btn btn-primary"/>
