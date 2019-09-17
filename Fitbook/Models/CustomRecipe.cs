@@ -20,6 +20,12 @@ namespace Fitbook.Models
         public int Calories { get; set; }
         public double? Servings { get; set; }
         public int CaloriesPerServing { get; set; }
+
+        // Foreign Keys
+        public int CategoryId { get; set; }
+        [ForeignKey("CategoryId")]
+        public Category Category { get; set; }
+
         public int FitbookUserId { get; set; }
         [ForeignKey("FitbookUserId")]
         public FitbookUser FitbookUser { get; set; }

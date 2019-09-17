@@ -52,6 +52,7 @@ namespace Fitbook.Controllers
         {
             string appUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             FitbookUser fitbookUser = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(appUserId)).Single();
+            List<Category> categories = new List<Category>();
 
             customRecipe.FitbookUserId = fitbookUser.FitbookUserId;
 

@@ -17,6 +17,7 @@ namespace Fitbook.Data
         public DbSet<RecommendedRecipe> ReccommendedRecipes { get; set; }
         public DbSet<Day> Days { get; set; }
         public DbSet<Meal> Meals { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -89,6 +90,33 @@ namespace Fitbook.Data
             MealSeedingList.Add(meal2);
 
             modelBuilder.Entity<Meal>().HasData(MealSeedingList);
+
+            // Seeding Category Table
+            /*List<Category> categories = new List<Category>();
+
+            Category category1 = new Category()
+            {
+                CategoryId = 1,
+                CategoryName = "High Carb"
+            };
+
+            Category category2 = new Category()
+            {
+                CategoryId = 1,
+                CategoryName = "High Protein"
+            };
+
+            Category category3 = new Category()
+            {
+                CategoryId = 3,
+                CategoryName = "High Fat"
+            };
+
+            categories.Add(category1);
+            categories.Add(category2);
+            categories.Add(category3);
+
+            modelBuilder.Entity<Category>().HasData(categories);*/
         }
     }
 }

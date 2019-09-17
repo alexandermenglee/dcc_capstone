@@ -19,6 +19,19 @@ namespace Fitbook.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Fitbook.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CategoryName");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("Fitbook.Models.CustomRecipe", b =>
                 {
                     b.Property<int>("CustomRecipeId")
@@ -30,6 +43,8 @@ namespace Fitbook.Migrations
                     b.Property<int>("CaloriesPerServing");
 
                     b.Property<int>("Carbohydrates");
+
+                    b.Property<int>("CategoryId");
 
                     b.Property<string>("CustomRecipeName");
 
@@ -45,6 +60,8 @@ namespace Fitbook.Migrations
                     b.Property<double?>("Servings");
 
                     b.HasKey("CustomRecipeId");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("FitbookUserId");
 
@@ -413,6 +430,11 @@ namespace Fitbook.Migrations
 
             modelBuilder.Entity("Fitbook.Models.CustomRecipe", b =>
                 {
+                    b.HasOne("Fitbook.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Fitbook.Models.FitbookUser", "FitbookUser")
                         .WithMany()
                         .HasForeignKey("FitbookUserId")

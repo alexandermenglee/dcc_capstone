@@ -5,20 +5,6 @@
 @* Displays all recipes from database *@
 
     <div>
-        @*@foreach (CustomRecipe customRecipe in Model.customRecipes)
-        {
-            <div>
-                <input type="hidden" value="@customRecipe.CustomRecipeId" />
-                <h3>@customRecipe.CustomRecipeName</h3>
-                <p>Carbohydrates per serving: @customRecipe.Carbohydrates</p>
-                <p>Protein per serving: @customRecipe.Protein</p>
-                <p>Fat per serving: @customRecipe.Fat</p>
-                <p>Calories per serving: @customRecipe.Calories</p>
-                <p></p>
-                <hr />
-            </div>
-        }*@
-
         @for (int i = 0; i < Model.customRecipes.Count; i++)
         {
             <h3>@Model.customRecipes[i].CustomRecipeName</h3>
