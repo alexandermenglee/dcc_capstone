@@ -6,8 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Fitbook.Data;
 using Fitbook.Models;
 using System.Security.Claims;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Fitbook.ViewModel;
 
 namespace Fitbook.Controllers
 {
@@ -21,9 +20,26 @@ namespace Fitbook.Controllers
         
         public IActionResult Index()
         {
-            List<CustomRecipe> allRecipesFromDb = _context.CustomRecipes.Select(c => c).ToList();
+            CustomRecipeIndexViewModel viewModel = new CustomRecipeIndexViewModel();
+            
+            viewModel.customRecipes = _context.CustomRecipes.Select(c => c).ToList();
+            viewModel.fitbookUsers = GetAssociatedUsers(viewModel.customRecipes);
+            
+            return View(viewModel);
+        }
 
-            return View(allRecipesFromDb);
+        // Helper method to get associated fitbookusers and their submitted recipes
+        private List<FitbookUser> GetAssociatedUsers(List<CustomRecipe> customRecipes)
+        {
+            List<FitbookUser> associatedFitbookUsers = new List<FitbookUser>();
+            
+            foreach(CustomRecipe customRecipe in customRecipes)
+            {
+                FitbookUser fitbookUser = _context.FitbookUsers.Where(f => f.FitbookUserId == customRecipe.FitbookUserId).Single();
+                associatedFitbookUsers.Add(fitbookUser);
+            }
+
+            return associatedFitbookUsers;
         }
 
         public IActionResult AddRecipe()
