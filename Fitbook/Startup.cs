@@ -17,6 +17,7 @@ using Fitbook.Models;
 using Fitbook.Controllers;
 using Fitbook.Interfaces;
 using Fitbook.Classes;
+using SignalRChat.Hubs;
 
 namespace Fitbook
 {
@@ -51,6 +52,8 @@ namespace Fitbook
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddScoped<IFitbookUsersMacronutrientsRepsitory, FitbookUsersMacronutrienRepository>();
             services.AddScoped<IDayRepository, DayRespository>();
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,6 +76,11 @@ namespace Fitbook
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chat");
+            });
 
             app.UseMvc(routes =>
             {
