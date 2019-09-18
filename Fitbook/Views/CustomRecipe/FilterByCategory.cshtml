@@ -1,9 +1,17 @@
-﻿@model List<CustomRecipe>
+﻿@model Fitbook.ViewModel.CustomRecipeIndexViewModel
 
-@foreach (CustomRecipe customRecipe in Model)
-{
-    <div>
-        <h3>@customRecipe.CustomRecipeName</h3>
-        <p>Calories per serving: @customRecipe.Calories</p>
+    <div id="recipes">
+        @for (int i = 0; i < Model.customRecipes.Count; i++)
+        {
+            <div>
+                <h3>@Model.customRecipes[i].CustomRecipeName</h3>
+                <p>Carbohydrates per serving: @Model.customRecipes[i].Carbohydrates</p>
+                <p>Protein per serving: @Model.customRecipes[i].Protein</p>
+                <p>Fat per serving: @Model.customRecipes[i].Fat</p>
+                <p>Calories per serving: @Model.customRecipes[i].Calories</p>
+                <h6><i>By @Model.fitbookUsers[i].FirstName @Model.fitbookUsers[i].LastName</i></h6>
+                <a asp-action="Display" asp-route-id="@Model.customRecipes[i].CustomRecipeId" class="btn btn-info">View</a>
+                <hr />
+            </div>
+        }
     </div>
-}

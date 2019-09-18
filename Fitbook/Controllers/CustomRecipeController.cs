@@ -76,9 +76,11 @@ namespace Fitbook.Controllers
         [HttpGet]
         public IActionResult FilterByCategory(int id)
         {
-            List<CustomRecipe> filteredCustomRecipes = _context.CustomRecipes.Where(c => c.CategoryId == id).ToList();
+            CustomRecipeIndexViewModel viewModel = new CustomRecipeIndexViewModel();
+            viewModel.customRecipes = _context.CustomRecipes.Where(c => c.CategoryId == id).ToList();
+            viewModel.fitbookUsers = GetAssociatedUsers(viewModel.customRecipes);
 
-            return View(filteredCustomRecipes);
+            return View(viewModel);
         }
     }
 }
