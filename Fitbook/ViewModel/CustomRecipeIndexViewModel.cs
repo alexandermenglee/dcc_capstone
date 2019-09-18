@@ -10,5 +10,6 @@ namespace Fitbook.ViewModel
     {
         public List<CustomRecipe> customRecipes { get; set; }
         public List<FitbookUser> fitbookUsers { get; set; }
+        public List<Category> Categories { get; set; }
     }
 }

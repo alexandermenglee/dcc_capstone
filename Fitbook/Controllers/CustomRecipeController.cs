@@ -24,6 +24,7 @@ namespace Fitbook.Controllers
             
             viewModel.customRecipes = _context.CustomRecipes.Select(c => c).ToList();
             viewModel.fitbookUsers = GetAssociatedUsers(viewModel.customRecipes);
+            viewModel.Categories = _context.Categories.Select(c => c).ToList();
             
             return View(viewModel);
         }
@@ -70,6 +71,14 @@ namespace Fitbook.Controllers
             CustomRecipe customRecipe = await _context.CustomRecipes.FindAsync(id);
 
             return View(customRecipe);
+        }
+
+        [HttpGet]
+        public IActionResult FilterByCategory(int id)
+        {
+            List<CustomRecipe> filteredCustomRecipes = _context.CustomRecipes.Where(c => c.CategoryId == id).ToList();
+
+            return View(filteredCustomRecipes);
         }
     }
 }

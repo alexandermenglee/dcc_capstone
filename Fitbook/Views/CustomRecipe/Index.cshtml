@@ -1,12 +1,18 @@
 ﻿@model Fitbook.ViewModel.CustomRecipeIndexViewModel
-@{
-}
+
+@* Displays dropdown for filtering by genre *@
+    <div>
+        <select asp-items="@(new SelectList(Model.Categories, "CategoryId", "CategoryName"))" id="category" onchange="filterByCategory(this.value)">
+            <option>Filter By Category</option>
+        </select>
+        <hr />
+    </div>
 
 @* Displays all recipes from database *@
-
-    <div>
+    <div id="recipes">
         @for (int i = 0; i < Model.customRecipes.Count; i++)
         {
+        <div>
             <h3>@Model.customRecipes[i].CustomRecipeName</h3>
             <p>Carbohydrates per serving: @Model.customRecipes[i].Carbohydrates</p>
             <p>Protein per serving: @Model.customRecipes[i].Protein</p>
@@ -15,7 +21,11 @@
             <h6><i>By @Model.fitbookUsers[i].FirstName @Model.fitbookUsers[i].LastName</i></h6>
             <a asp-action="Display" asp-route-id="@Model.customRecipes[i].CustomRecipeId" class="btn btn-info">View</a>
             <hr />
+        </div>
         }
     </div>
 
 <a asp-action="AddRecipe">Add Custom Recipe</a>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="~/js/categoryFilter.js"></script>

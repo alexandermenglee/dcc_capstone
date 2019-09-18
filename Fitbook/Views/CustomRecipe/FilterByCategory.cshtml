@@ -1,0 +1,9 @@
+﻿@model List<CustomRecipe>
+
+@foreach (CustomRecipe customRecipe in Model)
+{
+    <div>
+        <h3>@customRecipe.CustomRecipeName</h3>
+        <p>Calories per serving: @customRecipe.Calories</p>
+    </div>
+}
