@@ -22,5 +22,6 @@ namespace Fitbook.Models
         public int BMR { get; set; }
         [ForeignKey("ApplicationUserId")]
         public ApplicationUser ApplicationUser { get; set; }
+        public List<UserChat> UserChat { get; set; }
     }
 }

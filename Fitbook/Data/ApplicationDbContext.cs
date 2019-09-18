@@ -18,7 +18,8 @@ namespace Fitbook.Data
         public DbSet<Day> Days { get; set; }
         public DbSet<Meal> Meals { get; set; }
         public DbSet<Category> Categories { get; set; }
-
+        public DbSet<Chat> Chats { get; set; }
+        public DbSet<Message> Messages { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -30,12 +31,18 @@ namespace Fitbook.Data
             base.OnModelCreating(modelBuilder);
 
             // Creating one to many relationship between Day and Meal
-            modelBuilder.Entity<Day>().HasMany(d => d.Meals).WithOne(m => m.Day);
+            modelBuilder.Entity<Day>().HasMany(d => d.Meals).WithOne(m => m.Day);   
 
             // Creating junction table for Meal and Food (many to many relationship)
             modelBuilder.Entity<MealFood>().HasKey(mf => new { mf.MealId, mf.FoodId });
             modelBuilder.Entity<MealFood>().HasOne(mf => mf.Meal).WithMany(mf => mf.MealFoods).HasForeignKey(mf => mf.MealId);
             modelBuilder.Entity<MealFood>().HasOne(mf => mf.Food).WithMany(mf => mf.MealFoods).HasForeignKey(mf => mf.FoodId);
+
+            // Creating junction table for FitbookUser and Chat (many to many relationship)
+            modelBuilder.Entity<UserChat>().HasKey(uc => new {  uc.FitbookUserId, uc.ChatId });
+            modelBuilder.Entity<UserChat>().HasOne(uc => uc.FitbookUser).WithMany(uc => uc.UserChat).HasForeignKey(uc => uc.FitbookUserId);
+            modelBuilder.Entity<UserChat>().HasOne(uc => uc.Chat).WithMany(uc => uc.UserChat).HasForeignKey(uc => uc.ChatId);
+
 
             // Seeding Food table
             List<Food> FoodSeedingList = new List<Food>();
