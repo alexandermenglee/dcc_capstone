@@ -31,7 +31,7 @@ namespace Fitbook.Data
             base.OnModelCreating(modelBuilder);
 
             // Creating one to many relationship between Day and Meal
-            modelBuilder.Entity<Day>().HasMany(d => d.Meals).WithOne(m => m.Day);   
+            modelBuilder.Entity<Day>().HasMany(d => d.Meals).WithOne(m => m.Day);
 
             // Creating junction table for Meal and Food (many to many relationship)
             modelBuilder.Entity<MealFood>().HasKey(mf => new { mf.MealId, mf.FoodId });

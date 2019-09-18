@@ -4,14 +4,16 @@ using Fitbook.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Fitbook.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190918214934_UpdatedChatModel")]
+    partial class UpdatedChatModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,7 +40,11 @@ namespace Fitbook.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("FitbookUserId");
+
                     b.HasKey("ChatId");
+
+                    b.HasIndex("FitbookUserId");
 
                     b.ToTable("Chats");
                 });
@@ -473,6 +479,13 @@ namespace Fitbook.Migrations
                     b.Property<string>("Name");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
+                });
+
+            modelBuilder.Entity("Fitbook.Models.Chat", b =>
+                {
+                    b.HasOne("Fitbook.Models.FitbookUser")
+                        .WithMany("Chats")
+                        .HasForeignKey("FitbookUserId");
                 });
 
             modelBuilder.Entity("Fitbook.Models.CustomRecipe", b =>

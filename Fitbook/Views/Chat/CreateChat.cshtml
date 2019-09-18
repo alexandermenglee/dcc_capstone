@@ -1,0 +1,12 @@
+﻿@model  List<FitbookUser>
+
+@foreach (FitbookUser user in Model)
+{
+    <div>
+        <form asp-aciton="CreateChat" method="post">
+            <input type="hidden" name="fitbookUserId" value="@user.FitbookUserId" />
+            <p>@user.FirstName @user.LastName</p>
+            <input type="submit" value="Chat" class="btn btn-secondary"/>
+        </form>
+    </div>
+}

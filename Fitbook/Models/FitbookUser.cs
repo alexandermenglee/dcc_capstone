@@ -20,6 +20,9 @@ namespace Fitbook.Models
         public string Lifestyle { get; set; }
         public string ApplicationUserId { get; set; }
         public int BMR { get; set; }
+        [NotMapped]
+        public List<Chat> Chats { get; set; } = new List<Chat>();
+
         [ForeignKey("ApplicationUserId")]
         public ApplicationUser ApplicationUser { get; set; }
         public List<UserChat> UserChat { get; set; }
