@@ -7,11 +7,13 @@ using Fitbook.Data;
 using Fitbook.Models;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Fitbook.Controllers
 {
+    [Authorize]
     public class ChatController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -97,13 +99,17 @@ namespace Fitbook.Controllers
             await _context.Chats.AddAsync(chat);
             await _context.SaveChangesAsync();
 
-            Chat chatroom = _context.Chats.Where(c => c == chat).Single();
+            Chat chatroom = _context.Chats.Include("UserChat").Where(c => c == chat).Single();
             
             return RedirectToAction("Chatroom", "Chat", new { chatroom.ChatId });
         }
 
-        public IActionResult Chatroom(int chatId)
+        public IActionResult Chatroom(int chatroomId)
         {
+            string currentAppUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            FitbookUser fitbookUser = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(currentAppUserId)).Single();
+            ViewBag.user = fitbookUser.FirstName + fitbookUser.LastName;
+
             return View();
         }
     }

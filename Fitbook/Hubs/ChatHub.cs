@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
+using Fitbook.Models;
+using Newtonsoft.Json;
 
 namespace SignalRChat.Hubs
 {
@@ -7,7 +9,14 @@ namespace SignalRChat.Hubs
     {
         public async Task SendMessage(string user, string message)
         {
-            await Clients.All.SendAsync("ReceiveMessage", user, message);
+            /*var serializedMessage = JsonConvert.SerializeObject(message);*/
+            await Clients.All.SendAsync("RecieveMessage", user, message);
+        }
+
+        public Task SendPrivateMessage(string user, string message)
+        {
+            return Clients.User(user).SendAsync("ReceiveMessage", message);
+
         }
     }
 }

@@ -12,7 +12,8 @@ namespace Fitbook.Models
     {
         [Key]
         public int ChatId { get; set; }
-        public List<Message> Messages { get; set; }
+        [NotMapped]
+        public List<Message> Messages { get; set; } = new List<Message>();
         [NotMapped]
         public List<FitbookUser> FitbookUsers { get; set; } = new List<FitbookUser>();
 

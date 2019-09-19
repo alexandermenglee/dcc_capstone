@@ -15,7 +15,7 @@ namespace Fitbook.Models
         public string Username { get; set; }
         [Required]
         public string MessaegText { get; set; }
-        public DateTime TimeStamp { get; set; }
+        public DateTime TimeStamp { get; set; } = DateTime.Now;
 
         // Foregin Key to Chat object
         public int ChatId{ get; set; }
