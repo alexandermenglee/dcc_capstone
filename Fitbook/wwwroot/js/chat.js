@@ -40,6 +40,7 @@ document.getElementById("sendButton").addEventListener("click", function (event)
 "use strict";
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/chat").build();
+const loggedInUser = document.getElementById("username").value;
 
 //Disable send button until connection is established
 document.getElementById("sendButton").disabled = true;
@@ -50,23 +51,43 @@ connection.start().then(function () {
     return console.error(err.toString());
 });
 
-document.getElementById("sendButton").addEventListener("click", function (event) {
-    /*var user = document.getElementById("userInput").value;*/
+function sendMessage() {
     var message = document.getElementById("messageInput").value;
-    const user = document.getElementById("username").value;
-    connection.invoke("SendMessage", user, message).catch(function (err) {
+
+    if (message === "") {
+        alert("Cannot send blank msg");
+        return;
+    }
+
+    connection.invoke("SendMessage", loggedInUser, message).catch(function (err) {
         return console.error(err.toString());
     });
-    
-    event.preventDefault();
+
+    document.getElementById("messageInput").value = "";
+}
+
+document.getElementById("sendButton").addEventListener("click", sendMessage);
+
+document.addEventListener("keypress", event => {
+    if (event.keyCode === 13 || event.which === 13) {
+        sendMessage();
+    }
 });
 
 connection.on("RecieveMessage", function (user, message) {
+    console.log(user);
+    console.log(`logged in user is ${loggedInUser}`);
     var messageList = document.getElementById("messagesList");
     var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     var encodedMsg = user + ": " + msg;
     var pTag = document.createElement("p");
+
+    if (loggedInUser === user) {
+        pTag.setAttribute("class", "sent-speech-bubble");
+    } else {
+        pTag.setAttribute("class", "recieved-speech-bubble");
+    }
+
     pTag.textContent = encodedMsg;
-    pTag.classList.add("speech-bubble");
     messageList.appendChild(pTag);
 });

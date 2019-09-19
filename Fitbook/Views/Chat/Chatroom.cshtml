@@ -1,58 +1,22 @@
 ﻿@model Fitbook.Models.Chat
-@*<div class="container">
-        <div class="row">&nbsp;</div>
+
+    <div id="chat-container"class="container">
+        <input type="hidden" value="@ViewBag.user" id="username" />
         <div class="row">
-            <div class="col-6">&nbsp;</div>
-            <div class="col-6">
-                User..........<input type="text" id="userInput" />
-                <br />
-                Message...<input type="text" id="messageInput" />
-                <input type="button" id="sendButton" value="Send Message" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <hr />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6">&nbsp;</div>
-            <div class="col-6">
+            @*<div class="col-">&nbsp;</div>*@
+            <div class="col-12" id="chatbox">
                 <ul id="messagesList"></ul>
             </div>
         </div>
-    </div>
-    <script src="~/lib/signalr/dist/browser/signalr.js"></script>*@
-
-@*<form asp-action="CreateMessage" data-ajax-begin="clearInputField" data-ajax-complete="" data-ajax-succcess="sendMessage" data-ajax="true" data-ajax-method="POST">
-        <div class="form-group" id="messageText"></div>
-    </form>*@
-@*<script src="https://code.jquery.com/jquery-3.4.1.min.js"
-            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-            crossorigin="anonymous"></script>
-    <script src="~/js/chat.js"></script>*@
-
-<div class="container">
-    <input type="hidden" value="@ViewBag.user" id="username" />
-    <div class="row">&nbsp;</div>
-    <div class="row">
-        <div class="col-6">&nbsp;</div>
-        <div class="col-6">
-            Message...<input type="text" id="messageInput" />
-            <input type="button" id="sendButton" value="Send Message" />
+        @*<div class="row">&nbsp;</div>*@
+        <div class="row">
+            <div class="col-6">
+                <input type="text" id="messageInput" placeholder="Say something..." />
+            </div>
+            <div class="col-6">
+                <input type="button" class="btn btn-primary btn-group-sm" id="sendButton" value="Send" />
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <hr />
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6">&nbsp;</div>
-        <div class="col-6">
-            <ul id="messagesList"></ul>
-        </div>
-    </div>
-</div>
 <script src="~/lib/signalr/dist/browser/signalr.js"></script>
 <script src="~/js/chat.js"></script>
