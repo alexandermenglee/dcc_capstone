@@ -1,3 +1,7 @@
 ﻿.meal-container {
     margin-bottom: 15px;
 }
+
+#date {
+    text-align: center;
+}

@@ -3,8 +3,8 @@
     ViewData["Title"] = "Index";
     
 }
-
 <h1>Daily Log</h1>
+<h4 id="date"></h4>
 <a asp-controller="Food" asp-action="SearchFoodInDatabase" asp-route-dayId="@Model.Day.DayId">Compare Food With Macros</a>
 <form></form>
 @* Displays food *@
