@@ -1,10 +1,10 @@
 ﻿@model Fitbook.ViewModel.IndexViewModel;
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    
 }
 
-<h1>Index</h1>
+<h1>Daily Log</h1>
 <a asp-controller="Food" asp-action="SearchFoodInDatabase" asp-route-dayId="@Model.Day.DayId">Compare Food With Macros</a>
 <form></form>
 @* Displays food *@
@@ -12,20 +12,33 @@
     @{
         for (int i = 0; i < Model.Meals.Count; i++)
         {
+            <div class="container">
+                <div class="row">
+                    <div class="col"> <h4>Meal @(i + 1)</h4> </div>
+                    <div class="col"> Carbs </div>
+                    <div class="col"> Protein </div>
+                    <div class="col"> Fat </div>
+                    <div class="col"> Calories</div>
+                </div>
+            </div>
             <div>
-                <h4>Meal @(i + 1)</h4>
                 @for (int j = 0; j < Model.Meals[i].Foods.Count; j++)
                 {
-                    <p>@Model.Meals[i].Foods[j].FoodName</p>
-                    <p>Carbs: @Model.Meals[i].Foods[j].Carbohydrates</p>
-                    <p>Protein: @Model.Meals[i].Foods[j].Protein</p>
-                    <p>Fat: @Model.Meals[i].Foods[j].Fat</p>
+                    <div class="container meal-container">
+                        <div class="row">
+                            <div class="col"> @Model.Meals[i].Foods[j].FoodName </div>
+                            <div class="col"> @Model.Meals[i].Foods[j].Carbohydrates </div>
+                            <div class="col"> @Model.Meals[i].Foods[j].Protein </div>
+                            <div class="col"> @Model.Meals[i].Foods[j].Fat </div>
+                            <div class="col">@Model.Meals[i].Foods[j].Calories</div>
+                        </div>
+                    </div>
                 }
                 <br />
                 @using (Html.BeginForm("SearchFood", "Food"))
                 {
                     <input type="hidden" name="mealId" value="@Model.Meals[i].MealId" />
-                    <input type="submit" value="Add Food" />
+                    <input type="submit" class="btn btn-sm btn-secondary" value="Add Food" />
                     <br />
                     <hr />
                 }
@@ -34,25 +47,34 @@
     }
     <form asp-action="AddMeal" method="post">
         <input type="hidden" name="dayId" value="@Model.Day.DayId" />
-        <input type="submit" value="Add Meal" />
+        <input type="submit" class="btn btn-dark" value="Add Meal" />
     </form>
     <hr />
-    <div>
-        @{
-            <h5>Daily Caloric Intake</h5>
-            <div>Total Carbohydrates:  @Model.Day.Carbohydates</div>
-            <div>Total Protein:  @Model.Day.Protein</div>
-            <div>Total Fat: @Model.Day.Fat</div>
-            <div>Total Calories: @Model.Day.Calories</div>
-        }
-    </div>
-    <div>
-        <h5>Your Macronutrients</h5>
-        <div>Carbohydrates: @Model.fitbookUsersMacronutrients.Carbohydrates</div>
-        <div>Protein: @Model.fitbookUsersMacronutrients.Protein</div>
-        <div>Fat: @Model.fitbookUsersMacronutrients.Fat</div>
-        <div>Daily Caloric Goal: @Model.fitbookUsersMacronutrients.DailyCalories</div>
-    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h5>Your Macronutrients</h5>
+                <div>Carbohydrates: <span id="carbohydrates">@Model.fitbookUsersMacronutrients.Carbohydrates</span></div>
+                <div>Protein: <span id="protein">@Model.fitbookUsersMacronutrients.Protein</span></div>
+                <div>Fat: <span id="fat">@Model.fitbookUsersMacronutrients.Fat</span></div id="carbohydrates">
+                <div>Daily Caloric Goal: <span id="calories">@Model.fitbookUsersMacronutrients.DailyCalories</span></div>
+            </div>
+            <div class="col">
+                <h5>Daily Caloric Intake</h5>
+                <div>Total Carbohydrates:  <span id="actual-carbohydrates">@Model.Day.Carbohydates</span></div>
+                <div>Total Protein:  <span id="actual-protein">@Model.Day.Protein</span></div>
+                <div>Total Fat: <span id="actual-fat">@Model.Day.Fat</span></div>
+                <div>Total Calories: <span id="actual-calories">@Model.Day.Calories</span></div>
+            </div>
+            <div class="col">
+                <h5>Remaining Calories</h5>
+                <div>Remaining Carbohydrates:  <span id="remaining-carbohydrates"></span></div>
+                <div>Remaining Protein:  <span id="remaining-protein"></span></div>
+                <div>Remaining Fat: <span id="remaining-fat"></span></div>
+                <div>Remaining Calories: <span id="remaining-calories"></span></div>
+            </div>
+        </div>
+    </div> 
 </div>
-
+<script src="~/js/remainingNutrients.js"></script>
 

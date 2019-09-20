@@ -23,7 +23,7 @@ namespace Fitbook.Controllers
         }
         // GET: Day
         public async Task<ActionResult> Index()
-            {
+         {
             FitbookUser fitbookUser;
             FitbookUsersMacronutrients fbUsersNutrients;
             IndexViewModel indexViewModel = new IndexViewModel();
@@ -58,6 +58,13 @@ namespace Fitbook.Controllers
             await _dayRepository.SaveDayNutrition(indexViewModel.Day, nutrition);
 
             return View(indexViewModel);
+        }
+
+        public IActionResult AddMeal(int dayId)
+        {
+            _dayRepository.AddMealToDay(dayId);
+
+            return RedirectToAction("Index");
         }
     }
 }

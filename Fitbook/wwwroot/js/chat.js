@@ -1,43 +1,4 @@
-﻿/*"use strict";
-
-var connection = new signalR.HubConnectionBuilder().withUrl("/chat").build();
-let username;
-let message = {
-    username: "",
-    MessageText: ""
-};
-let Username = document.getElementById('userInput');
-let Message = document.getElementById('messageInput');
-
-
-//Disable send button until connection is established
-document.getElementById("sendButton").disabled = true;
-
-connection.on("ReceiveMessage", function (user, message) {
-    var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    var encodedMsg = user + " says " + msg;
-    var li = document.createElement("li");
-    li.textContent = encodedMsg;
-    document.getElementById("messagesList").appendChild(li);
-});
-
-connection.start().then(function () {
-    document.getElementById("sendButton").disabled = false;
-}).catch(function (err) {
-    return console.error(err.toString());
-});
-
-document.getElementById("sendButton").addEventListener("click", function (event) {
-    message.MessageText = document.getElementById("messageInput").value;
-    console.log(message);
-
-    connection.invoke("SendMessage", Username.value, Message.value).catch(function (err) {
-        return console.error(err.toString());
-    });
-    event.preventDefault();
-});*/
-
-"use strict";
+﻿"use strict";
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/chat").build();
 const loggedInUser = document.getElementById("username").value;
@@ -75,8 +36,6 @@ document.addEventListener("keypress", event => {
 });
 
 connection.on("RecieveMessage", function (user, message) {
-    console.log(user);
-    console.log(`logged in user is ${loggedInUser}`);
     var messageList = document.getElementById("messagesList");
     var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     var encodedMsg = user + ": " + msg;

@@ -108,7 +108,7 @@ namespace Fitbook.Controllers
         {
             string currentAppUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             FitbookUser fitbookUser = _context.FitbookUsers.Where(f => f.ApplicationUserId.Equals(currentAppUserId)).Single();
-            ViewBag.user = fitbookUser.FirstName + fitbookUser.LastName;
+            ViewBag.user = $"{fitbookUser.FirstName} {fitbookUser.LastName}";
 
             return View();
         }
